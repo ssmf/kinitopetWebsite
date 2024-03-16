@@ -7,7 +7,7 @@ const currentTime = useDateFormat(useNow(), 'HH:mm A')
 <template>
   <div class="Taskbar">
     <div class="powerButton">
-      <img src="/public/Assets/Media/powerButton.webp" alt="Power off Button" />
+      <img draggable="false" src="/public/Assets/Media/powerButton.webp" alt="Power off Button" />
     </div>
     <div class="ActiveAppsWrapper"></div>
     <div class="Time">
@@ -21,6 +21,12 @@ const currentTime = useDateFormat(useNow(), 'HH:mm A')
   box-sizing: border-box;
   border: 5px solid white;
   border-bottom: none;
+  flex: 1;
+  background-color: var(--gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
 }
 
 img {
@@ -28,9 +34,8 @@ img {
 }
 
 .powerButton {
-  height: 100%;
-  width: fit-content;
-  padding: 10px;
+  aspect-ratio: 1 / 1;
+  height: 90%;
 }
 
 .powerButton:hover {
@@ -38,16 +43,7 @@ img {
 }
 
 .powerButton:active {
-  padding: 15px;
-}
-
-.Taskbar {
-  flex: 1;
-  background-color: var(--gray);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 10px;
+  scale: 0.7;
 }
 
 .Time {
@@ -55,6 +51,6 @@ img {
   padding: 5px 10px;
   font-size: var(--dateSize);
   border: 4px solid black;
-  box-shadow: 4px 4px 0px 2px var(--darkGray);
+  box-shadow: 2px 2px 0px 2px var(--darkGray);
 }
 </style>

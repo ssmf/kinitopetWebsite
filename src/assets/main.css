@@ -8,7 +8,7 @@
 :root {
   --gray: #c3c3c3;
   --darkGray: #807e7e;
-  --dateSize: 35px;
+  --dateSize: 25px;
 }
 
 * {
@@ -21,6 +21,15 @@
   height: 100vh;
   margin: 0;
   padding: 0;
+}
+
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 a,
