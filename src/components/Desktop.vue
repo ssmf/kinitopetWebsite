@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import File from '@/components/File.vue'
+import { useMouse } from '@vueuse/core'
 
 const Files = ref([
   { name: 'MyComputer', fileExtension: 'webp', iconScale: 0.9 },
@@ -9,6 +10,7 @@ const Files = ref([
 let openWindows = []
 let currentSelection = null
 const DesktopDom = ref(null)
+const mousePos = ref(useMouse())
 
 let Openable = false
 let isDragging = false
@@ -17,24 +19,38 @@ const Select = (newSel) => {
   isDragging = true
 
   currentSelection = newSel
+  currentSelection.classList.add('Dragging')
+  currentSelection.style.gridArea = 0 / 0 / 0 / 0
   currentSelection.classList.add('Overlay')
+  console.log('Holding')
 }
 
 const UnSelect = (fileDom) => {
-  console.log('Unselected!')
   document.getElementById(fileDom).classList.remove('Overlay')
 }
 
 window.addEventListener('mouseup', () => {
   if (isDragging) {
     isDragging = false
+    console.log('Not holding')
+    currentSelection.classList.remove('Dragging')
+    console.log(mousePos.value.x)
+    PlaceFile()
   }
 })
+
+const PlaceFile = () => {
+  const x = Math.floor(mousePos.value.x / 120) + 1
+  const y = Math.floor(mousePos.value.y / 120) + 1
+
+  currentSelection.style.gridArea = `${y} / ${x} / ${y + 1} / ${x + 1}`
+}
 </script>
 
 <template>
   <div class="Desktop" id="Desktop" ref="DesktopDom">
     <File
+      :style="`top: ${mousePos.y - 50}px; left: ${mousePos.x - 50}px;`"
       v-for="specificFile in Files"
       :key="specificFile.name"
       :Name="specificFile.name"
@@ -61,7 +77,7 @@ window.addEventListener('mouseup', () => {
   grid-template-columns: repeat(auto-fill, 100px);
   grid-template-rows: repeat(auto-fill, 100px);
   grid-auto-flow: column;
-  gap: 25px;
+  gap: 20px;
   position: relative;
 }
 
@@ -74,5 +90,11 @@ window.addEventListener('mouseup', () => {
   width: 100%;
   background-color: blue;
   opacity: 0.8;
+}
+
+div > .Dragging {
+  position: absolute;
+  width: 100px;
+  height: 100px;
 }
 </style>
