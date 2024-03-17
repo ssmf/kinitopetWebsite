@@ -1,13 +1,15 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import File from '@/components/File.vue'
-import { useMouse, useElementSize } from '@vueuse/core'
+import { useMouse, useElementSize, until } from '@vueuse/core'
+import AppWindow from './AppWindow.vue'
 
 const Files = ref([
-  { name: 'MyComputer', fileExtension: 'webp', iconScale: 0.9 },
+  { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
   { name: 'MusicPlayer', fileExtension: 'webp', iconScale: 1.5 }
 ])
-let openWindows = []
+
+let openWindows = ref([])
 let currentSelection = null
 const DesktopDom = ref(null)
 const mousePos = ref(useMouse())
@@ -15,14 +17,25 @@ const mousePos = ref(useMouse())
 let Openable = false
 let isDragging = false
 
-const Select = (newSel) => {
-  isDragging = true
+const Select = async (newSel) => {
+  if (currentSelection == newSel && Openable) {
+    openWindows.value.push(currentSelection.id)
+  }
 
+  isDragging = true
+  Openable = true
   currentSelection = newSel
-  currentSelection.classList.add('Dragging')
-  currentSelection.style.gridArea = 0 / 0 / 0 / 0
   currentSelection.classList.add('Overlay')
-  console.log('Holding')
+
+  setTimeout(() => {
+    Openable = false
+  }, 700)
+
+  await until(mousePos.value).changed()
+  if (isDragging) {
+    currentSelection.classList.add('Dragging')
+    currentSelection.style.gridArea = 0 / 0 / 0 / 0
+  }
 }
 
 const UnSelect = (fileDom) => {
@@ -32,7 +45,6 @@ const UnSelect = (fileDom) => {
 window.addEventListener('mouseup', () => {
   if (isDragging) {
     isDragging = false
-    console.log('Not holding')
     currentSelection.classList.remove('Dragging')
     PlaceFile()
   }
@@ -45,8 +57,6 @@ const PlaceFile = () => {
 
   const x = clampFunc(Math.floor(mousePos.value.x / 120) + 1, maxX)
   const y = clampFunc(Math.floor(mousePos.value.y / 120) + 1, maxY)
-
-  console.log(x)
 
   currentSelection.style.gridArea = `${y} / ${x} / ${y + 1} / ${x + 1}`
 }
@@ -70,6 +80,13 @@ const clampFunc = (val, max) => {
       v-model:UnSelect="UnSelect"
     >
     </File>
+    <AppWindow
+      v-for="appWindow in openWindows"
+      :key="appWindow"
+      :Name="appWindow"
+      :MousePos="mousePos"
+      :IconExtension="Files.find((e) => e.name == appWindow).fileExtension"
+    ></AppWindow>
   </div>
 </template>
 

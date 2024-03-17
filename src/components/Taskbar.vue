@@ -43,7 +43,7 @@ img {
 }
 
 .powerButton:active {
-  scale: 0.7;
+  scale: 0.8;
 }
 
 .Time {
