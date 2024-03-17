@@ -4,15 +4,17 @@ import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 const props = defineProps(['Name', 'IconExtension', 'MousePos'])
 const closeFunc = defineModel('closeFunc')
+const putOnTop = defineModel('putOnTop')
 
 const windowDom = ref(null)
 const mousePos = ref(useMouse())
+const closed = ref(false)
 
 const WindowContent = defineAsyncComponent(
   () => import(`./apps/${props.Name.split(' ').join('')}.vue`)
 )
 const appIcon = new URL(
-  '/Assets/Media/' + props.Name.split(' ').join('') + '.' + props.IconExtension,
+  '/Media/' + props.Name.split(' ').join('') + '.' + props.IconExtension,
   import.meta.url
 ).href
 
@@ -25,14 +27,15 @@ const isDragging = ref(false)
 const windowSize = ref(null)
 
 const startDragging = () => {
-  windowSize.value = useElementSize(windowDom)
-  isDragging.value = true
-  console.log('started dragging!')
+  if (!closed.value) {
+    windowSize.value = useElementSize(windowDom)
+    isDragging.value = true
+    putOnTop.value(props.Name)
+  }
 }
 
 const stopDragging = () => {
   isDragging.value = false
-  console.log('stopped dragging!')
 }
 </script>
 
@@ -52,7 +55,17 @@ const stopDragging = () => {
         <p class="AppName">{{ Name }}</p>
       </div>
       <div class="Options">
-        <button class="exit" @mousedown="closeFunc(Name)">X</button>
+        <button
+          class="exit"
+          @mousedown="
+            () => {
+              closeFunc(Name)
+              closed = true
+            }
+          "
+        >
+          X
+        </button>
       </div>
     </div>
     <div class="Content">

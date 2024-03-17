@@ -7,7 +7,7 @@ const currentTime = useDateFormat(useNow(), 'HH:mm A')
 <template>
   <div class="Taskbar">
     <div class="powerButton">
-      <img draggable="false" src="/public/Assets/Media/powerButton.webp" alt="Power off Button" />
+      <img draggable="false" src="/Media/powerButton.webp" alt="Power off Button" />
     </div>
     <div class="ActiveAppsWrapper"></div>
     <div class="Time">

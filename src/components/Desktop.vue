@@ -18,7 +18,11 @@ let Openable = false
 let isDragging = false
 
 const Select = async (newSel) => {
-  if (currentSelection == newSel && Openable) {
+  if (
+    currentSelection == newSel &&
+    Openable &&
+    !openWindows.value.find((e) => e == currentSelection.id)
+  ) {
     openWindows.value.push(currentSelection.id)
   }
 
@@ -29,12 +33,11 @@ const Select = async (newSel) => {
 
   setTimeout(() => {
     Openable = false
-  }, 700)
+  }, 500)
 
   await until(mousePos.value).changed()
   if (isDragging) {
     currentSelection.classList.add('Dragging')
-    currentSelection.style.gridArea = 0 / 0 / 0 / 0
   }
 }
 
@@ -52,13 +55,23 @@ window.addEventListener('mouseup', () => {
 
 const PlaceFile = () => {
   const DesktopSize = useElementSize(DesktopDom)
-  const maxX = Math.floor(DesktopSize.width.value / 120 + 1)
+  let isTaken = false
+  const maxX = Math.floor(DesktopSize.width.value / 120 + 1) - 1
   const maxY = Math.floor(DesktopSize.height.value / 120)
 
   const x = clampFunc(Math.floor(mousePos.value.x / 120) + 1, maxX)
   const y = clampFunc(Math.floor(mousePos.value.y / 120) + 1, maxY)
 
-  currentSelection.style.gridArea = `${y} / ${x} / ${y + 1} / ${x + 1}`
+  DesktopDom.value.childNodes.forEach((file) => {
+    if (file.style && file.style.gridArea == `${y} / ${x} / ${y + 1} / ${x + 1}`) {
+      console.log('This area is taken!')
+      isTaken = true
+      return 0
+    }
+  })
+  if (!isTaken) {
+    currentSelection.style.gridArea = `${y} / ${x} / ${y + 1} / ${x + 1}`
+  }
 }
 
 const clampFunc = (val, max) => {
@@ -66,9 +79,14 @@ const clampFunc = (val, max) => {
 }
 
 const closeWindow = (window) => {
-  console.log(openWindows.value)
+  console.log('closed')
   openWindows.value = openWindows.value.filter((el) => el != window)
-  console.log(openWindows.value)
+}
+
+const putOnTop = (window) => {
+  const newArr = openWindows.value.filter((el) => el != window)
+  newArr.push(window)
+  openWindows.value = newArr
 }
 </script>
 
@@ -86,12 +104,15 @@ const closeWindow = (window) => {
       v-model:UnSelect="UnSelect"
     >
     </File>
+  </div>
+  <div class="OpenWindowsWrapper">
     <AppWindow
       v-for="appWindow in openWindows"
       :key="appWindow"
       :Name="appWindow"
       :MousePos="mousePos"
       v-model:closeFunc="closeWindow"
+      v-model:putOnTop="putOnTop"
       :IconExtension="Files.find((e) => e.name == appWindow).fileExtension"
     ></AppWindow>
   </div>
@@ -101,7 +122,7 @@ const closeWindow = (window) => {
 .Desktop {
   flex: 13;
   padding: 12px;
-  background-image: url('/public/Assets/Media/DefaultWallpaper.webp');
+  background-image: url('/Media/DefaultWallpaper.webp');
   background-size: cover;
   background-position: center;
   image-rendering: crisp-edges;
@@ -112,6 +133,11 @@ const closeWindow = (window) => {
   grid-auto-flow: column;
   gap: 20px;
   position: relative;
+  z-index: 1;
+}
+
+.OpenWindowsWrapper {
+  z-index: 2;
 }
 
 .Selected {
@@ -126,7 +152,7 @@ const closeWindow = (window) => {
 }
 
 div > .Dragging {
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 100px;
 }
