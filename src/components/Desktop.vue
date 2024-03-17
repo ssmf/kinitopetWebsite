@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import File from '@/components/File.vue'
-import { useMouse } from '@vueuse/core'
+import { useMouse, useElementSize } from '@vueuse/core'
 
 const Files = ref([
   { name: 'MyComputer', fileExtension: 'webp', iconScale: 0.9 },
@@ -34,16 +34,25 @@ window.addEventListener('mouseup', () => {
     isDragging = false
     console.log('Not holding')
     currentSelection.classList.remove('Dragging')
-    console.log(mousePos.value.x)
     PlaceFile()
   }
 })
 
 const PlaceFile = () => {
-  const x = Math.floor(mousePos.value.x / 120) + 1
-  const y = Math.floor(mousePos.value.y / 120) + 1
+  const DesktopSize = useElementSize(DesktopDom)
+  const maxX = Math.floor(DesktopSize.width.value / 120 + 1)
+  const maxY = Math.floor(DesktopSize.height.value / 120)
+
+  const x = clampFunc(Math.floor(mousePos.value.x / 120) + 1, maxX)
+  const y = clampFunc(Math.floor(mousePos.value.y / 120) + 1, maxY)
+
+  console.log(x)
 
   currentSelection.style.gridArea = `${y} / ${x} / ${y + 1} / ${x + 1}`
+}
+
+const clampFunc = (val, max) => {
+  return val > max ? max : val
 }
 </script>
 
