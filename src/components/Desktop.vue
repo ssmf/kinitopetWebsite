@@ -6,7 +6,7 @@ import AppWindow from './AppWindow.vue'
 
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
-  { name: 'MusicPlayer', fileExtension: 'webp', iconScale: 1.5 }
+  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 }
 ])
 
 let openWindows = ref([])
@@ -64,6 +64,12 @@ const PlaceFile = () => {
 const clampFunc = (val, max) => {
   return val > max ? max : val
 }
+
+const closeWindow = (window) => {
+  console.log(openWindows.value)
+  openWindows.value = openWindows.value.filter((el) => el != window)
+  console.log(openWindows.value)
+}
 </script>
 
 <template>
@@ -85,6 +91,7 @@ const clampFunc = (val, max) => {
       :key="appWindow"
       :Name="appWindow"
       :MousePos="mousePos"
+      v-model:closeFunc="closeWindow"
       :IconExtension="Files.find((e) => e.name == appWindow).fileExtension"
     ></AppWindow>
   </div>

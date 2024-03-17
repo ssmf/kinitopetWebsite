@@ -3,6 +3,8 @@ import { useElementSize, useMouse } from '@vueuse/core'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 const props = defineProps(['Name', 'IconExtension', 'MousePos'])
+const closeFunc = defineModel('closeFunc')
+
 const windowDom = ref(null)
 const mousePos = ref(useMouse())
 
@@ -40,8 +42,8 @@ const stopDragging = () => {
     ref="windowDom"
     :style="
       isDragging
-        ? { top: mousePos.y - 10 + 'px', left: mousePos.x - windowSize.width / 2 + 'px' }
-        : { top: mousePos.y, left: mousePos.y }
+        ? { top: mousePos.y - 20 + 'px', left: mousePos.x - windowSize.width / 2 + 'px' }
+        : { top: mousePos, left: mousePos }
     "
   >
     <div class="TopBar" @mousedown="startDragging" @mouseup="stopDragging">
@@ -49,7 +51,9 @@ const stopDragging = () => {
         <img :src="appIcon" alt="icon of the app" class="AppIcon" />
         <p class="AppName">{{ Name }}</p>
       </div>
-      <div class="Options"></div>
+      <div class="Options">
+        <button class="exit" @mousedown="closeFunc(Name)">X</button>
+      </div>
     </div>
     <div class="Content">
       <WindowContent></WindowContent>
@@ -91,5 +95,23 @@ const stopDragging = () => {
   padding: 10px;
   border: 2px solid (--darkGray);
   background-color: white;
+}
+
+.Options {
+  display: flex;
+  padding: 2px 0px;
+}
+
+.exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: var(--smallButtonFontSize);
+  aspect-ratio: 1 / 1;
+  padding: 5px;
+  text-align: center;
+  background-color: var(--gray);
+  box-shadow: 1px 1px 0px 1px black;
 }
 </style>
