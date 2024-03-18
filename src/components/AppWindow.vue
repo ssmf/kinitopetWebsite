@@ -2,7 +2,7 @@
 import { useElementSize, useMouse } from '@vueuse/core'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
-const props = defineProps(['Name', 'IconExtension', 'MousePos'])
+const props = defineProps(['Name', 'IconExtension', 'MousePos', 'IconScale'])
 const closeFunc = defineModel('closeFunc')
 const putOnTop = defineModel('putOnTop')
 
@@ -51,7 +51,22 @@ const stopDragging = () => {
   >
     <div class="TopBar" @mousedown="startDragging" @mouseup="stopDragging">
       <div class="AppDetails">
-        <img :src="appIcon" alt="icon of the app" class="AppIcon" />
+        <img
+          v-if="IconExtension == 'webp'"
+          :src="appIcon"
+          alt="icon of the app"
+          class="AppIcon"
+          :style="{ scale: IconScale }"
+        />
+        <video
+          v-else
+          autoplay
+          loop
+          :src="appIcon"
+          alt="icon of the app"
+          class="AppIcon"
+          :style="{ scale: IconScale }"
+        ></video>
         <p class="AppName">{{ Name }}</p>
       </div>
       <div class="Options">

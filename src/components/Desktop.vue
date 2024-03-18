@@ -1,12 +1,22 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import File from '@/components/File.vue'
 import { useMouse, useElementSize, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
 
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
-  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 }
+  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 },
+  { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
+  { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
+  { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
+  { name: 'Get Kinitopet', fileExtension: 'webm', iconScale: 1 },
+  { name: 'Terminal', fileExtension: 'webm', iconScale: 0.8 },
+  { name: 'Author', fileExtension: 'webp', iconScale: 0.8 },
+  { name: 'About me', fileExtension: 'webp', iconScale: 1 },
+  { name: 'Personalize', fileExtension: 'webp', iconScale: 1 },
+  { name: 'Settings', fileExtension: 'webp', iconScale: 0.85 },
+  { name: 'Images', fileExtension: 'webp', iconScale: 0.9 }
 ])
 
 let openWindows = ref([])
@@ -114,6 +124,7 @@ const putOnTop = (window) => {
       v-model:closeFunc="closeWindow"
       v-model:putOnTop="putOnTop"
       :IconExtension="Files.find((e) => e.name == appWindow).fileExtension"
+      :IconScale="Files.find((e) => e.name == appWindow).iconScale"
     ></AppWindow>
   </div>
 </template>

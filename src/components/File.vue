@@ -19,7 +19,22 @@ onMounted(() => {
 
 <template>
   <div class="File" @mousedown="Select(FileDom)" ref="FileDom">
-    <img draggable="false" :src="imagePath" class="FileImage" :style="`scale: ${iconScale};`" />
+    <img
+      v-if="IconPath[IconPath.length - 1] == 'p'"
+      draggable="false"
+      :src="imagePath"
+      class="FileImage"
+      :style="`scale: ${iconScale};`"
+    />
+    <video
+      autoplay
+      loop
+      v-else
+      draggable="false"
+      :src="imagePath"
+      class="FileImage"
+      :style="`scale: ${iconScale};`"
+    ></video>
     <p class="FileName">{{ Name }}</p>
   </div>
 </template>
@@ -30,6 +45,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
 }
 
 .FileImage {
@@ -43,6 +59,10 @@ onMounted(() => {
   font-size: var(--fileNameSize);
   color: white;
   text-shadow: 2px 2px 0px black;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  line-height: 100%;
 }
 
 .Overlay {
