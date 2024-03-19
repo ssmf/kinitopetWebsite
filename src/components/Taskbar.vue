@@ -1,7 +1,7 @@
 <script setup>
 import { useDateFormat, useNow } from '@vueuse/core'
 
-const currentTime = useDateFormat(useNow(), 'HH:mm A')
+const currentTime = useDateFormat(useNow(), 'hh:mm A')
 </script>
 
 <template>

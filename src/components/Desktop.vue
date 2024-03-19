@@ -4,6 +4,31 @@ import File from '@/components/File.vue'
 import { useMouse, useElementSize, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
 
+const GenerateRandomString = (length) => {
+  const characters = 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890'
+  let generatedString = ''
+  for (let i = 0; i < length; i++) {
+    generatedString += characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return generatedString
+}
+
+const ComputerSpecs = ref({
+  DiskSpace: Math.floor(Math.random() * (6 - 2) + 2),
+  DiskSpaceTaken: 1 + Math.floor(Math.random() * 10) / 10,
+  LicenseValidationTime: Math.floor(Math.random() * (45 - 12) + 12),
+  DeviceName: '1L0V3K1N1T0P3T369',
+  CPU: 'K386-32',
+  RAM: Math.floor(Math.random() * (8 - 6) + 6),
+  OsType: '32-bit (k-bit)',
+  OsBuild: GenerateRandomString(30),
+  DeviceId: 'K1NIT0PC-' + GenerateRandomString(4) + '000401'
+})
+
+const SessionTime = ref(0)
+setInterval(() => {
+  SessionTime.value++
+}, 1000)
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
   { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 },
@@ -121,8 +146,10 @@ const putOnTop = (window) => {
       :key="appWindow"
       :Name="appWindow"
       :MousePos="mousePos"
+      :ComputerSpecs="ComputerSpecs"
       v-model:closeFunc="closeWindow"
       v-model:putOnTop="putOnTop"
+      v-model:SessionTime="SessionTime"
       :IconExtension="Files.find((e) => e.name == appWindow).fileExtension"
       :IconScale="Files.find((e) => e.name == appWindow).iconScale"
     ></AppWindow>

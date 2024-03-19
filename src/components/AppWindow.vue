@@ -2,9 +2,10 @@
 import { useElementSize, useMouse } from '@vueuse/core'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
-const props = defineProps(['Name', 'IconExtension', 'MousePos', 'IconScale'])
+const props = defineProps(['Name', 'IconExtension', 'MousePos', 'IconScale', 'ComputerSpecs'])
 const closeFunc = defineModel('closeFunc')
 const putOnTop = defineModel('putOnTop')
+const SessionTime = defineModel('SessionTime')
 
 const windowDom = ref(null)
 const mousePos = ref(useMouse())
@@ -84,7 +85,10 @@ const stopDragging = () => {
       </div>
     </div>
     <div class="Content">
-      <WindowContent></WindowContent>
+      <WindowContent
+        v-model:SessionTime="SessionTime"
+        :ComputerSpecs="ComputerSpecs"
+      ></WindowContent>
     </div>
   </div>
 </template>
