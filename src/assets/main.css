@@ -8,11 +8,18 @@
 :root {
   --gray: #c3c3c3;
   --darkGray: #807e7e;
+  --pink: #f3b2f8;
+  --redBrown: #7b0000;
+  --green: #1cdf0b;
   --dateSize: 25px;
   --smallButtonFontSize: 15px;
+  --windowHeaderSize: 30px;
+  --windowSecondHeaderSize: 27px;
+  --windowTextSize: 22px;
 }
 
 * {
+  image-rendering: crisp-edges;
   font-family: 'win95', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif',
     'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
 }

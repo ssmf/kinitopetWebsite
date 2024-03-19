@@ -4,6 +4,21 @@ import File from '@/components/File.vue'
 import { useMouse, useElementSize, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
 
+const Files = ref([
+  { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
+  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 },
+  { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
+  { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
+  { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
+  { name: 'Get Kinitopet', fileExtension: 'webm', iconScale: 1 },
+  { name: 'Terminal', fileExtension: 'webm', iconScale: 0.8 },
+  { name: 'Author', fileExtension: 'webp', iconScale: 0.8 },
+  { name: 'About me', fileExtension: 'webp', iconScale: 1 },
+  { name: 'Personalize', fileExtension: 'webp', iconScale: 1 },
+  { name: 'Settings', fileExtension: 'webp', iconScale: 0.85 },
+  { name: 'Images', fileExtension: 'webp', iconScale: 0.9 }
+])
+
 const GenerateRandomString = (length) => {
   const characters = 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890'
   let generatedString = ''
@@ -22,27 +37,14 @@ const ComputerSpecs = ref({
   RAM: Math.floor(Math.random() * (8 - 6) + 6),
   OsType: '32-bit (k-bit)',
   OsBuild: GenerateRandomString(30),
-  DeviceId: 'K1NIT0PC-' + GenerateRandomString(4) + '000401'
+  DeviceId: 'K1NIT0PC-' + GenerateRandomString(4) + '000401',
+  FileCount: Files.value.length
 })
 
 const SessionTime = ref(0)
 setInterval(() => {
   SessionTime.value++
 }, 1000)
-const Files = ref([
-  { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
-  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 },
-  { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
-  { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
-  { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
-  { name: 'Get Kinitopet', fileExtension: 'webm', iconScale: 1 },
-  { name: 'Terminal', fileExtension: 'webm', iconScale: 0.8 },
-  { name: 'Author', fileExtension: 'webp', iconScale: 0.8 },
-  { name: 'About me', fileExtension: 'webp', iconScale: 1 },
-  { name: 'Personalize', fileExtension: 'webp', iconScale: 1 },
-  { name: 'Settings', fileExtension: 'webp', iconScale: 0.85 },
-  { name: 'Images', fileExtension: 'webp', iconScale: 0.9 }
-])
 
 let openWindows = ref([])
 let currentSelection = null
