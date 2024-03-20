@@ -11,10 +11,11 @@
   --pink: #f3b2f8;
   --redBrown: #7b0000;
   --green: #1cdf0b;
+  --seaColor: #007cb1;
   --dateSize: 25px;
   --smallButtonFontSize: 15px;
-  --windowHeaderSize: 30px;
-  --windowSecondHeaderSize: 27px;
+  --windowHeaderSize: 34px;
+  --windowSecondHeaderSize: 29px;
   --windowTextSize: 22px;
 }
 
@@ -38,14 +39,6 @@ img {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
 }
 
 @media (hover: hover) {

@@ -29,14 +29,14 @@ const GenerateRandomString = (length) => {
 }
 
 const ComputerSpecs = ref({
-  DiskSpace: Math.floor(Math.random() * (6 - 2) + 2),
-  DiskSpaceTaken: 1 + Math.floor(Math.random() * 10) / 10,
+  DiskSpace: Math.floor((Math.random() * (6 - 2) + 2) * 10) / 10,
+  DiskSpaceTaken: 1 + Math.floor(Math.random() * 100) / 100,
   LicenseValidationTime: Math.floor(Math.random() * (45 - 12) + 12),
   DeviceName: '1L0V3K1N1T0P3T369',
   CPU: 'K386-32',
   RAM: Math.floor(Math.random() * (8 - 6) + 6),
   OsType: '32-bit (k-bit)',
-  OsBuild: GenerateRandomString(30),
+  OsBuild: GenerateRandomString(25),
   DeviceId: 'K1NIT0PC-' + GenerateRandomString(4) + '000401',
   FileCount: Files.value.length
 })
