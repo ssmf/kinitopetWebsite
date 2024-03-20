@@ -1,11 +1,10 @@
 <script setup>
-import { useDateFormat } from '@vueuse/core'
 import { ref } from 'vue'
 const props = defineProps(['ComputerSpecs'])
 const SessionTime = defineModel('SessionTime')
 
 const Capacity = ref(props.ComputerSpecs.DiskSpace)
-const Used = ref(props.ComputerSpecs.DiskSpaceTaken)
+const Used = ref(Math.floor(props.ComputerSpecs.DiskSpaceTaken * 100) / 100)
 const Free = ref(Math.floor((Capacity.value - Used.value) * 100) / 100)
 
 const formatSeconds = (s) =>
