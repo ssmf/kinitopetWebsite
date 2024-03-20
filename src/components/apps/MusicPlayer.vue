@@ -6,7 +6,7 @@
       <div class="Visualizer"></div>
       <div class="TimeLine"></div>
       <div class="Wrapper row">
-        <div class="Interactions">
+        <div class="Interactions col">
           <h4>00:46 / 2:32</h4>
           <div class="Buttons SongButtons row"></div>
           <h5>44KHz 192KBps</h5>
@@ -20,15 +20,15 @@
         <img class="Logo" src="/Media/KinitoOS.png" />
         <div class="Sliders row">
           <div class="SliderWrapper col">
-            <input type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
             <h5 class="SliderText">Vol</h5>
           </div>
           <div class="SliderWrapper col">
-            <input type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
             <h5 class="SliderText">L/R</h5>
           </div>
           <div class="SliderWrapper col">
-            <input type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
             <h5 class="SliderText">Bass</h5>
           </div>
         </div>
@@ -75,13 +75,19 @@
 }
 
 .Buttons {
-  width: 100px;
+  width: 130px;
   gap: 10px;
   justify-content: center;
 }
 
 .Button {
-  width: 45px;
+  font: var(--smallButtonFontSize);
+  border-radius: 0;
+  background-color: var(--lightGray);
+  border: 0px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  width: 60px;
 }
 
 .Sliders {
@@ -93,6 +99,25 @@
 }
 
 .Slider {
+}
+
+input[type='range']::-webkit-slider-thumb,
+input[type='range']::-moz-range-thumb {
+  border-radius: 0px;
+  height: 10px;
+  width: 20px;
+  background-color: var(--lightGray);
+  border: 1px solid black;
+}
+
+input[type='range']::-moz-range-track,
+input[type='range']::-webkit-slider-runnable-track {
+  width: 4px;
+  height: 100%;
+  background: var(--gray);
+  border: 0px;
+  border-bottom: 1.3px solid black;
+  border-right: 1.3px solid black;
 }
 
 .TrackListHeading {
