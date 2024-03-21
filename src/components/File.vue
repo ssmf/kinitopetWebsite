@@ -60,7 +60,6 @@ onMounted(() => {
   color: white;
   text-shadow: 2px 2px 0px black;
   position: relative;
-  z-index: 2;
   text-align: center;
   line-height: 100%;
 }
