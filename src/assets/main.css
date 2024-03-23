@@ -24,6 +24,20 @@
   image-rendering: crisp-edges;
   font-family: 'win95', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif',
     'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
+  scrollbar-width: thin;
+  scrollbar-color: var(--darkGray) rgba(0, 0, 0, 0);
+}
+
+*::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--darkGray);
+}
+
+*::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 #app {

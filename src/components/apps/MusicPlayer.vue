@@ -1,23 +1,45 @@
 <script setup>
-import { ref } from 'vue'
-
-const aud = new Audio(new URL('/Music/Bliss.mp3', import.meta.url).href)
-
-aud.play()
+import { ref, onMounted } from 'vue'
 
 const loop = ref(false)
 const autoPlay = ref(false)
 const on = ref(true)
 const sync = ref(false)
 
-const songs = new URL('/Music/a world I build for you [KinitoPET OST].mp3', import.meta.url).href
+const songsDom = ref(null)
+const TracksDom = ref(null)
 
-console.log(songs)
-console.log('test')
+let currentSong = null
+
+const songsPaths = Object.keys(import.meta.glob('/public/Music/*'))
+const songs = ref([])
+
+onMounted(() => {
+  songsPaths.forEach((song) => {
+    const renderedSong = new Audio(song)
+    songsDom.value.appendChild(renderedSong)
+    songs.value.push(renderedSong)
+  })
+  currentSong = songs.value[0]
+  songs.value[0].play()
+
+  TracksDom.value.forEach((e) => {
+    const currentPar = e.querySelector('p')
+    currentPar.style['animation-duration'] =
+      `${Math.floor((currentPar.offsetWidth / 50) * 10) / 10}s`
+  })
+})
+
+const PlayNewSong = (newSong) => {
+  currentSong.pause()
+  currentSong = newSong
+  currentSong.play()
+}
 </script>
 
 <template>
   <div class="MusicPlayer">
+    <div class="songs" ref="songsDom"></div>
     <div class="Main col">
       <div class="Visualizer"></div>
       <div class="TimeLine"></div>
@@ -62,12 +84,20 @@ console.log('test')
         </div>
       </div>
     </div>
-    <div class="TracListWrapper col">
+    <div class="TrackListWrapper col" style="flex-wrap: nowrap">
       <h2 class="TrackListHeading">KinitoPET OST</h2>
       <div class="TrackList">
-        <div class="Track"><p class="TrackName">1. My new friend [KinitoPET OST]</p></div>
-        <div class="Track"><p class="TrackName">1. My new friend [KinitoPET OST]</p></div>
-        <div class="Track"><p class="TrackName">1. My new friend [KinitoPET OST]</p></div>
+        <div
+          v-for="song in songsPaths"
+          @click="PlayNewSong(songs.find((e) => e.getAttribute('src') == song))"
+          :key="song"
+          class="Track"
+          ref="TracksDom"
+        >
+          <p :id="song + 'Title'" class="TrackName">
+            {{ song.replace('/public/Music/', '') }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -89,6 +119,8 @@ console.log('test')
 
 .MusicPlayer {
   display: flex;
+  height: 500px;
+  width: max-content;
 }
 .Main {
 }
@@ -172,27 +204,31 @@ input[type='range']::-webkit-slider-runnable-track {
   cursor: pointer;
 }
 
-.TracListWrapper {
+.TrackListWrapper {
+  height: 100%;
   gap: 20px;
 }
 
 .TrackList {
+  padding-right: 5px;
   border: 2px solid black;
   border-bottom: 1px solid black;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @keyframes moveTrackTitle {
   from {
-    margin-left: 0;
+    transform: translateX(0%);
   }
   5% {
-    margin-left: 0;
+    transform: translateX(0%);
   }
   90% {
-    margin-left: -100%;
+    transform: translateX(min(calc(180px - 100%), 0%));
   }
   to {
-    margin-left: -100%;
+    transform: translateX(min(calc(180px - 100%), 0%));
   }
 }
 
@@ -215,8 +251,10 @@ input[type='range']::-webkit-slider-runnable-track {
 }
 
 .TrackName {
-  animation: 5s infinite moveTrackTitle;
-  animation-timing-function: steps(30, end);
+  position: relative;
+  animation-name: moveTrackTitle;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(25, end);
   user-select: none;
 }
 
