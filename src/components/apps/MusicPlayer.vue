@@ -1,7 +1,9 @@
 <script setup>
 import { useDateFormat } from '@vueuse/core'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
+const isPlaying = ref(false)
+const stopped = ref(true)
 const loop = ref(false)
 const autoPlay = ref(false)
 const on = ref(true)
@@ -10,24 +12,26 @@ const sync = ref(false)
 const songsDom = ref(null)
 const TracksDom = ref(null)
 
+const volume = ref(0.5)
+
 const songsPaths = Object.keys(import.meta.glob('/public/Music/*'))
 
 let currentSong = ref('')
-const songs = ref([])
+const songs = ref(null)
 
 onMounted(() => {
-  songsPaths.forEach((song) => {
-    const renderedSong = new Audio(song)
-    songsDom.value.appendChild(renderedSong)
-    songs.value.push(renderedSong)
-  })
   currentSong.value = songs.value[0]
-  songs.value[0].play()
 
   TracksDom.value.forEach((e) => {
     const currentPar = e.querySelector('p')
     currentPar.style['animation-duration'] =
       `${Math.floor((currentPar.offsetWidth / 50) * 10) / 10}s`
+  })
+  watch(volume, (curr) => {
+    songs.value.forEach((e) => {
+      e.volume = curr
+      console.log(curr)
+    })
   })
 })
 
@@ -35,9 +39,12 @@ const PlayNewSong = (newSong) => {
   currentSong.value.pause()
   currentSong.value = newSong
   currentSong.value.play()
+  isPlaying.value = true
+  stopped.value = false
 }
 
 const SkipSong = (num) => {
+  stopped.value = false
   currentSong.value.pause()
   currentSong.value.currentTime = 0
   const currentId = songs.value.indexOf(currentSong.value)
@@ -46,10 +53,14 @@ const SkipSong = (num) => {
     newId += num
   }
   currentSong.value = songs.value[newId]
-  currentSong.value.play()
+  if (isPlaying.value) {
+    currentSong.value.play()
+  }
 }
 
 const ResetSong = () => {
+  isPlaying.value = false
+  stopped.value = true
   currentSong.value.pause()
   currentSong.value.currentTime = 0
   currentSong.value = songs.value[0]
@@ -58,7 +69,9 @@ const ResetSong = () => {
 
 <template>
   <div class="MusicPlayer">
-    <div class="songs" ref="songsDom"></div>
+    <div class="songs" ref="songsDom">
+      <audio v-for="song in songsPaths" :key="song" :src="song" ref="songs"></audio>
+    </div>
     <div class="Main col" style="flex-wrap: nowrap">
       <div class="Visualizer"></div>
       <div class="TimeLine"></div>
@@ -84,32 +97,46 @@ const ResetSong = () => {
           <div class="Buttons SongButtons row">
             <img
               draggable="false"
-              class="Button SongButton"
+              class="Button SongButton UnTogglableButton"
               src="/public/Media/PreviousSong.webp"
               @click="SkipSong(-1)"
             />
             <img
-              @click="currentSong.pause()"
+              @click="
+                () => {
+                  currentSong.pause()
+                  isPlaying = false
+                }
+              "
               draggable="false"
               class="Button SongButton"
+              :class="{ ButtonPressed: !isPlaying }"
               src="/public/Media/PauseSong.webp"
             />
             <img
-              @click="currentSong.play()"
+              @click="
+                () => {
+                  currentSong.play()
+                  isPlaying = true
+                  stopped = false
+                }
+              "
               draggable="false"
               class="Button SongButton"
+              :class="{ ButtonPressed: isPlaying }"
               src="/public/Media/PlaySong.webp"
             />
             <img
               @click="SkipSong(1)"
               draggable="false"
-              class="Button SongButton"
+              class="Button SongButton UnTogglableButton"
               src="/public/Media/SkipSong.webp"
             />
             <img
               @click="ResetSong"
               draggable="false"
               class="Button SongButton"
+              :class="{ ButtonPressed: stopped }"
               src="/public/Media/StopSong.webp"
             />
           </div>
@@ -130,7 +157,7 @@ const ResetSong = () => {
         <img class="Logo" src="/Media/KinitoOS.png" />
         <div class="Sliders row">
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" />
+            <input min="0" max="1" step=".05" type="range" class="Slider" v-model="volume" />
             <h5 class="SliderText">Vol</h5>
           </div>
           <div class="SliderWrapper col">
@@ -220,7 +247,7 @@ const ResetSong = () => {
   padding: 4px;
 }
 
-.SongButton:active {
+.UnTogglableButton:active {
   background-color: var(--gray);
   border: 1px solid black;
   border-left: 2px solid black;
