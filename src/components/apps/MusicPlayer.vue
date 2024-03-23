@@ -40,18 +40,22 @@ const PlayNewSong = (newSong) => {
 <template>
   <div class="MusicPlayer">
     <div class="songs" ref="songsDom"></div>
-    <div class="Main col">
+    <div class="Main col" style="flex-wrap: nowrap">
       <div class="Visualizer"></div>
       <div class="TimeLine"></div>
       <div class="Wrapper row">
         <div class="Interactions col">
           <h4 style="font-size: var(--windowTextSize)">00:46 / 2:32</h4>
           <div class="Buttons SongButtons row">
-            <img class="Button SongButton" src="/public/Media/PreviousSong.webp" />
-            <img class="Button SongButton" src="/public/Media/PlaySong.webp" />
-            <img class="Button SongButton" src="/public/Media/PauseSong.webp" />
-            <img class="Button SongButton" src="/public/Media/StopSong.webp" />
-            <img class="Button SongButton" src="/public/Media/SkipSong.webp" />
+            <img
+              draggable="false"
+              class="Button SongButton"
+              src="/public/Media/PreviousSong.webp"
+            />
+            <img draggable="false" class="Button SongButton" src="/public/Media/PauseSong.webp" />
+            <img draggable="false" class="Button SongButton" src="/public/Media/StopSong.webp" />
+            <img draggable="false" class="Button SongButton" src="/public/Media/SkipSong.webp" />
+            <img draggable="false" class="Button SongButton" src="/public/Media/PlaySong.webp" />
           </div>
           <h5 style="font-size: calc(var(--windowTextSize) - 5px)">44KHz 192KBps</h5>
         </div>
@@ -70,15 +74,15 @@ const PlayNewSong = (newSong) => {
         <img class="Logo" src="/Media/KinitoOS.png" />
         <div class="Sliders row">
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" />
             <h5 class="SliderText">Vol</h5>
           </div>
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" />
             <h5 class="SliderText">L/R</h5>
           </div>
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" orient="vertical" />
+            <input min="0" max="100" step="5" type="range" class="Slider" />
             <h5 class="SliderText">Bass</h5>
           </div>
         </div>
@@ -119,10 +123,11 @@ const PlayNewSong = (newSong) => {
 
 .MusicPlayer {
   display: flex;
-  height: 500px;
+  height: 400px;
   width: max-content;
 }
 .Main {
+  margin-bottom: -70px;
 }
 
 .Visualizer {
@@ -156,6 +161,17 @@ const PlayNewSong = (newSong) => {
 
 .SongButton {
   width: 40px;
+  padding: 4px;
+}
+
+.SongButton:active {
+  background-color: var(--gray);
+  border: 1px solid black;
+  border-left: 2px solid black;
+  border-top: 2px solid black;
+  position: relative;
+  top: 3px;
+  left: 1px;
 }
 
 .Button:hover {
@@ -173,18 +189,31 @@ const PlayNewSong = (newSong) => {
 }
 
 .Sliders {
-  gap: 10px;
+  margin-left: 50px;
+  margin-top: 90px;
+  gap: 20px;
 }
 
 .SliderWrapper {
   height: 200px;
+  margin-left: -100px;
 }
 
 .Slider {
+  rotate: 270deg;
 }
 
-input[type='range']::-webkit-slider-thumb,
+.SliderText {
+  margin-top: 80px;
+}
+
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
 input[type='range']::-moz-range-thumb {
+  rotate: 90deg;
   border-radius: 0px;
   height: 10px;
   width: 20px;
@@ -193,10 +222,43 @@ input[type='range']::-moz-range-thumb {
   cursor: pointer;
 }
 
-input[type='range']::-moz-range-track,
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  rotate: 90deg;
+  border-radius: 0px;
+  height: 10px;
+  width: 20px;
+  background-color: var(--lightGray);
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: var(--gray);
+  border: 0px;
+  border-bottom: 1.3px solid black;
+  border-right: 1.3px solid black;
+  cursor: pointer;
+}
+
 input[type='range']::-webkit-slider-runnable-track {
-  width: 4px;
-  height: 100%;
+  width: 100%;
+  height: 4px;
+  background: var(--gray);
+  border: 0px;
+  border-bottom: 1.3px solid black;
+  border-right: 1.3px solid black;
+  cursor: pointer;
+}
+
+/***** Track Styles *****/
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
   background: var(--gray);
   border: 0px;
   border-bottom: 1.3px solid black;
@@ -205,7 +267,6 @@ input[type='range']::-webkit-slider-runnable-track {
 }
 
 .TrackListWrapper {
-  height: 100%;
   gap: 20px;
 }
 
@@ -215,6 +276,7 @@ input[type='range']::-webkit-slider-runnable-track {
   border-bottom: 1px solid black;
   overflow-x: hidden;
   overflow-y: auto;
+  scroll-snap-type: y mandatory;
 }
 
 @keyframes moveTrackTitle {
@@ -243,6 +305,7 @@ input[type='range']::-webkit-slider-runnable-track {
   justify-content: flex-start;
   text-wrap: nowrap;
   overflow: hidden;
+  scroll-snap-align: center;
 }
 
 .Track:hover {

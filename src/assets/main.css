@@ -22,6 +22,7 @@
 
 * {
   image-rendering: crisp-edges;
+  image-rendering: pixelated;
   font-family: 'win95', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif',
     'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
   scrollbar-width: thin;
