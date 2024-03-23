@@ -1,5 +1,5 @@
 <script setup>
-import { useDateFormat } from '@vueuse/core'
+import { bypassFilter, useDateFormat } from '@vueuse/core'
 import { ref, onMounted, watch } from 'vue'
 
 const isPlaying = ref(false)
@@ -13,6 +13,27 @@ const songsDom = ref(null)
 const TracksDom = ref(null)
 
 const volume = ref(0.5)
+const LR = ref(0)
+const bass = ref(0)
+
+const audioctx = new AudioContext()
+
+const panner = audioctx.createStereoPanner()
+panner.connect(audioctx.destination)
+
+const bassFilter = audioctx.createBiquadFilter()
+bassFilter.type = 'lowshelf'
+bassFilter.frequency.value = 200
+bassFilter.connect(panner)
+
+watch(bass, (curr) => {
+  bassFilter.gain.value = curr
+  console.log(curr)
+})
+
+watch(LR, (curr) => {
+  panner.pan.value = curr
+})
 
 const songsPaths = Object.keys(import.meta.glob('/public/Music/*'))
 
@@ -27,10 +48,15 @@ onMounted(() => {
     currentPar.style['animation-duration'] =
       `${Math.floor((currentPar.offsetWidth / 50) * 10) / 10}s`
   })
+
+  songs.value.forEach((e) => {
+    const audioSrc = audioctx.createMediaElementSource(e)
+    audioSrc.connect(bassFilter)
+  })
+
   watch(volume, (curr) => {
     songs.value.forEach((e) => {
       e.volume = curr
-      console.log(curr)
     })
   })
 })
@@ -161,11 +187,11 @@ const ResetSong = () => {
             <h5 class="SliderText">Vol</h5>
           </div>
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" />
+            <input min="-1" max="1" step=".1" type="range" class="Slider" v-model="LR" />
             <h5 class="SliderText">L/R</h5>
           </div>
           <div class="SliderWrapper col">
-            <input min="0" max="100" step="5" type="range" class="Slider" />
+            <input min="-50" max="50" step="5" type="range" class="Slider" v-model="bass" />
             <h5 class="SliderText">Bass</h5>
           </div>
         </div>
