@@ -1,4 +1,5 @@
 <script setup>
+import { useDateFormat } from '@vueuse/core'
 import { ref, onMounted } from 'vue'
 
 const loop = ref(false)
@@ -9,9 +10,9 @@ const sync = ref(false)
 const songsDom = ref(null)
 const TracksDom = ref(null)
 
-let currentSong = null
-
 const songsPaths = Object.keys(import.meta.glob('/public/Music/*'))
+
+let currentSong = ref('')
 const songs = ref([])
 
 onMounted(() => {
@@ -20,7 +21,7 @@ onMounted(() => {
     songsDom.value.appendChild(renderedSong)
     songs.value.push(renderedSong)
   })
-  currentSong = songs.value[0]
+  currentSong.value = songs.value[0]
   songs.value[0].play()
 
   TracksDom.value.forEach((e) => {
@@ -31,9 +32,27 @@ onMounted(() => {
 })
 
 const PlayNewSong = (newSong) => {
-  currentSong.pause()
-  currentSong = newSong
-  currentSong.play()
+  currentSong.value.pause()
+  currentSong.value = newSong
+  currentSong.value.play()
+}
+
+const SkipSong = (num) => {
+  currentSong.value.pause()
+  currentSong.value.currentTime = 0
+  const currentId = songs.value.indexOf(currentSong.value)
+  let newId = currentId
+  if ((num > 0 && currentId < songs.value.length - 1) || (num < 0 && currentId > 0)) {
+    newId += num
+  }
+  currentSong.value = songs.value[newId]
+  currentSong.value.play()
+}
+
+const ResetSong = () => {
+  currentSong.value.pause()
+  currentSong.value.currentTime = 0
+  currentSong.value = songs.value[0]
 }
 </script>
 
@@ -45,17 +64,54 @@ const PlayNewSong = (newSong) => {
       <div class="TimeLine"></div>
       <div class="Wrapper row">
         <div class="Interactions col">
-          <h4 style="font-size: var(--windowTextSize)">00:46 / 2:32</h4>
+          <Suspense>
+            <h4 style="font-size: var(--windowTextSize)">
+              {{
+                useDateFormat(Math.floor(currentSong.currentTime * 1000), 'mm:ss').value.replace(
+                  '"',
+                  ''
+                )
+              }}
+              /
+              {{
+                useDateFormat(Math.floor(currentSong.duration * 1000), 'mm:ss').value.replace(
+                  '"',
+                  ''
+                )
+              }}
+            </h4>
+          </Suspense>
           <div class="Buttons SongButtons row">
             <img
               draggable="false"
               class="Button SongButton"
               src="/public/Media/PreviousSong.webp"
+              @click="SkipSong(-1)"
             />
-            <img draggable="false" class="Button SongButton" src="/public/Media/PauseSong.webp" />
-            <img draggable="false" class="Button SongButton" src="/public/Media/StopSong.webp" />
-            <img draggable="false" class="Button SongButton" src="/public/Media/SkipSong.webp" />
-            <img draggable="false" class="Button SongButton" src="/public/Media/PlaySong.webp" />
+            <img
+              @click="currentSong.pause()"
+              draggable="false"
+              class="Button SongButton"
+              src="/public/Media/PauseSong.webp"
+            />
+            <img
+              @click="currentSong.play()"
+              draggable="false"
+              class="Button SongButton"
+              src="/public/Media/PlaySong.webp"
+            />
+            <img
+              @click="SkipSong(1)"
+              draggable="false"
+              class="Button SongButton"
+              src="/public/Media/SkipSong.webp"
+            />
+            <img
+              @click="ResetSong"
+              draggable="false"
+              class="Button SongButton"
+              src="/public/Media/StopSong.webp"
+            />
           </div>
           <h5 style="font-size: calc(var(--windowTextSize) - 5px)">44KHz 192KBps</h5>
         </div>
