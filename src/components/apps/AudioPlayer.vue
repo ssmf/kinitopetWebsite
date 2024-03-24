@@ -1,6 +1,7 @@
 <script setup>
-import { bypassFilter, useDateFormat } from '@vueuse/core'
+import { useDateFormat } from '@vueuse/core'
 import { ref, onMounted, watch } from 'vue'
+import AudioVisualizer from '@/components/AudioVisualizer.vue'
 
 const isPlaying = ref(false)
 const stopped = ref(true)
@@ -18,8 +19,12 @@ const bass = ref(0)
 
 const audioctx = new AudioContext()
 
+const analyzer = ref(audioctx.createAnalyser())
+analyzer.value.fftSize = 128
+analyzer.value.connect(audioctx.destination)
+
 const panner = audioctx.createStereoPanner()
-panner.connect(audioctx.destination)
+panner.connect(analyzer.value)
 
 const bassFilter = audioctx.createBiquadFilter()
 bassFilter.type = 'lowshelf'
@@ -28,7 +33,6 @@ bassFilter.connect(panner)
 
 watch(bass, (curr) => {
   bassFilter.gain.value = curr
-  console.log(curr)
 })
 
 watch(LR, (curr) => {
@@ -63,6 +67,7 @@ onMounted(() => {
 
 const PlayNewSong = (newSong) => {
   currentSong.value.pause()
+  currentSong.value.currentTime = 0
   currentSong.value = newSong
   currentSong.value.play()
   isPlaying.value = true
@@ -77,6 +82,8 @@ const SkipSong = (num) => {
   let newId = currentId
   if ((num > 0 && currentId < songs.value.length - 1) || (num < 0 && currentId > 0)) {
     newId += num
+  } else {
+    newId = 0
   }
   currentSong.value = songs.value[newId]
   if (isPlaying.value) {
@@ -91,15 +98,32 @@ const ResetSong = () => {
   currentSong.value.currentTime = 0
   currentSong.value = songs.value[0]
 }
+
+const songEnded = () => {
+  if (loop.value) {
+    currentSong.value.currentTime = 0
+    currentSong.value.play()
+  } else if (autoPlay.value) {
+    SkipSong(1)
+  } else {
+    isPlaying.value = false
+  }
+}
 </script>
 
 <template>
-  <div class="MusicPlayer">
+  <div class="AudioPlayer">
     <div class="songs" ref="songsDom">
-      <audio v-for="song in songsPaths" :key="song" :src="song" ref="songs"></audio>
+      <audio
+        @ended="songEnded"
+        v-for="song in songsPaths"
+        :key="song"
+        :src="song"
+        ref="songs"
+      ></audio>
     </div>
     <div class="Main col" style="flex-wrap: nowrap">
-      <div class="Visualizer"></div>
+      <AudioVisualizer v-model:analyzer="analyzer"></AudioVisualizer>
       <div class="TimeLine"></div>
       <div class="Wrapper row">
         <div class="Interactions col">
@@ -230,18 +254,15 @@ const ResetSong = () => {
   flex-wrap: wrap;
 }
 
-.MusicPlayer {
+.AudioPlayer {
   display: flex;
   height: 400px;
   width: max-content;
+  display: flex;
+  gap: 20px;
 }
 .Main {
   margin-bottom: -70px;
-}
-
-.Visualizer {
-  width: 100%;
-  height: 200px;
 }
 
 .Wrapper {

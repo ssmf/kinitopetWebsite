@@ -27,6 +27,7 @@
     'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
   scrollbar-width: thin;
   scrollbar-color: var(--darkGray) rgba(0, 0, 0, 0);
+  user-select: none;
 }
 
 *::-webkit-scrollbar {
