@@ -145,7 +145,7 @@ const putOnTop = (window) => {
   <div class="OpenWindowsWrapper">
     <AppWindow
       v-for="appWindow in openWindows"
-      :key="appWindow"
+      :key="JSON.stringify(appWindow)"
       :Name="appWindow"
       :MousePos="mousePos"
       :ComputerSpecs="ComputerSpecs"

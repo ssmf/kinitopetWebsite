@@ -6,10 +6,6 @@ const analyzer = defineModel('analyzer')
 const bufferLength = analyzer.value.frequencyBinCount
 const dataArr = new Uint8Array(bufferLength)
 
-setInterval(() => {
-  console.log(analyzer.value)
-}, 1000)
-
 const visualizerCanvas = ref(null)
 let ctx = null
 let barWidth = 0

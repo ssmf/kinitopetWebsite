@@ -66,6 +66,7 @@ onMounted(() => {
 })
 
 const PlayNewSong = (newSong) => {
+  console.log(newSong)
   currentSong.value.pause()
   currentSong.value.currentTime = 0
   currentSong.value = newSong
@@ -109,6 +110,10 @@ const songEnded = () => {
     isPlaying.value = false
   }
 }
+
+const getSRC = (song) => {
+  return new URL(song.replace('/public', ''), import.meta.url).href
+}
 </script>
 
 <template>
@@ -117,8 +122,9 @@ const songEnded = () => {
       <audio
         @ended="songEnded"
         v-for="song in songsPaths"
-        :key="song"
-        :src="song"
+        :key="JSON.stringify(song)"
+        :id="song"
+        :src="getSRC(song)"
         ref="songs"
       ></audio>
     </div>
@@ -226,7 +232,7 @@ const songEnded = () => {
       <div class="TrackList">
         <div
           v-for="song in songsPaths"
-          @click="PlayNewSong(songs.find((e) => e.getAttribute('src') == song))"
+          @click="PlayNewSong(songs.find((e) => e.getAttribute('id') == song))"
           :key="song"
           class="Track"
           ref="TracksDom"
