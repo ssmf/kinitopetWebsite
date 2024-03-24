@@ -6,7 +6,7 @@ import AppWindow from './AppWindow.vue'
 
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
-  { name: 'Music Player', fileExtension: 'webp', iconScale: 1.5 },
+  { name: 'Audio Player', fileExtension: 'webp', iconScale: 1.5 },
   { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
   { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
   { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
