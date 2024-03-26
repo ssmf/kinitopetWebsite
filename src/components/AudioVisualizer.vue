@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 
 const analyzer = defineModel('analyzer')
 
@@ -10,6 +10,7 @@ const visualizerCanvas = ref(null)
 let ctx = null
 let barWidth = 0
 let barHeight = 0
+let closed = false
 
 onMounted(() => {
   ctx = visualizerCanvas.value.getContext('2d', { antialias: false })
@@ -17,9 +18,16 @@ onMounted(() => {
   animateBars()
 })
 
+onBeforeUnmount(() => {
+  closed = true
+})
+
 let x = 0
 
 const animateBars = () => {
+  if (closed) {
+    return
+  }
   x = 0
   ctx.clearRect(0, 0, visualizerCanvas.value.width, visualizerCanvas.value.height)
   analyzer.value.getByteFrequencyData(dataArr)

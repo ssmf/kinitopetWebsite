@@ -66,7 +66,6 @@ onMounted(() => {
 })
 
 const PlayNewSong = (newSong) => {
-  console.log(newSong)
   currentSong.value.pause()
   currentSong.value.currentTime = 0
   currentSong.value = newSong
