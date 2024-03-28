@@ -6,7 +6,13 @@
       <h2>KinitoPet - Your <span class="pinkBackground">new BEST friend!</span></h2>
       <div class="HeaderGifs row">
         <img src="/public/Media/Star.gif" class="SmallGif" />
-        <video src="/public/Media/AboutKinitopetHQ.webm" autoplay loop class="GameDiscGif"></video>
+        <video
+          src="/public/Media/AboutKinitopetHQ.webm"
+          autoplay
+          loop
+          muted
+          class="GameDiscGif"
+        ></video>
         <img src="/public/Media/Star.gif" class="SmallGif" />
       </div>
       <h3>
@@ -121,6 +127,7 @@
   overflow: auto;
   padding: 15px;
   gap: 20px;
+  overflow-x: hidden;
 }
 
 p {
@@ -144,9 +151,7 @@ h4 {
 }
 
 .col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
 }
 
 .row {
@@ -172,6 +177,7 @@ h4 {
 
 .KinitoDescription {
   gap: 40px;
+  width: 90%;
 }
 
 .WebWorldSection {

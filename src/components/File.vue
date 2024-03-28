@@ -29,6 +29,7 @@ onMounted(() => {
     <video
       autoplay
       loop
+      muted
       v-else
       draggable="false"
       :src="imagePath"

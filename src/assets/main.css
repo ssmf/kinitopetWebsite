@@ -15,6 +15,7 @@
   --seaColor: #007cb1;
   --darkBlue: #0500ff;
   --orange: #ff8a01;
+  --fileNameSize: 16px;
   --dateSize: 25px;
   --smallButtonFontSize: 15px;
   --windowHeaderSize: 34px;
@@ -49,6 +50,19 @@
 
 .gray {
   color: var(--gray);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .underline {
