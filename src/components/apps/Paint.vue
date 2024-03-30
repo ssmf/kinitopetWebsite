@@ -1,5 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
+import { onMounted, ref } from 'vue'
+
+const canvasElement = ref(null)
+const canvasMouse = useMouseInElement(canvasElement)
+
 const Colors = ref([
   '#000000',
   '#ffffff',
@@ -30,26 +35,75 @@ const Colors = ref([
   '#783903',
   '#ff7741'
 ])
+
+let ctx = null
+
+const currentColor = ref(Colors.value[0])
+let isDrawing = false
+const brushSize = ref(30)
+
+onMounted(() => {
+  ctx = canvasElement.value.getContext('2d')
+  canvasElement.value.width = canvasElement.value.offsetWidth
+  canvasElement.value.height = canvasElement.value.offsetHeight
+  ctx.fillStyle = currentColor.value
+})
+
+const StartDrawing = () => {
+  console.log('StartedDrawing')
+  isDrawing = true
+  drawCircle()
+}
+
+const changeColor = (newClr) => {
+  currentColor.value = newClr
+  ctx.fillStyle = currentColor.value
+}
+
+const drawCircle = () => {
+  if (isDrawing) {
+    ctx.beginPath()
+    ctx.arc(canvasMouse.elementX.value, canvasMouse.elementY.value, brushSize.value, 0, 2 * Math.PI)
+    ctx.fill()
+    requestAnimationFrame(drawCircle)
+  }
+}
+
+const EndDrawing = () => {
+  isDrawing = false
+}
 </script>
 
 <template>
   <div class="Paint col">
     <div class="Wrapper row">
       <div class="Tools row">
-        <img class="Pen ToolbarIcon" src="/public/Media/Clover.gif" />
-        <img class="Line ToolbarIcon" src="/public/Media/Clover.gif" />
-        <img class="Square ToolbarIcon" src="/public/Media/Clover.gif" />
-        <img class="Circle ToolbarIcon" src="/public/Media/Clover.gif" />
+        <img class="Pen ToolbarIcon" src="/public/Media/Pencil.webp" />
+        <img class="Eraser ToolbarIcon" src="/public/Media/Eraser.webp" />
+        <img class="Line ToolbarIcon" src="/public/Media/Line.webp" />
+        <img class="Square ToolbarIcon" src="/public/Media/Square.webp" />
+        <img class="Triangle ToolbarIcon" src="/public/Media/Triangle.webp" />
+        <img class="Circle ToolbarIcon" src="/public/Media/Circle.webp" />
       </div>
-      <canvas class="PaintCanvas"></canvas>
+      <canvas
+        class="PaintCanvas"
+        ref="canvasElement"
+        @mousedown="StartDrawing"
+        @mouseup="EndDrawing"
+      ></canvas>
     </div>
-    <div class="Colors">
-      <div
-        v-for="clr in Colors"
-        :key="JSON.stringify(clr)"
-        class="Color"
-        :style="{ backgroundColor: clr }"
-      ></div>
+    <div class="row" style="width: 100%; justify-content: flex-start">
+      <div class="Colors">
+        <div
+          v-for="clr in Colors"
+          :key="JSON.stringify(clr)"
+          class="Color"
+          :style="{ backgroundColor: clr }"
+          :class="{ SelectedColor: currentColor == clr }"
+          @click="changeColor(clr)"
+        ></div>
+      </div>
+      <input type="range" min="1" max="30" step="1" v-model="brushSize" />
     </div>
   </div>
 </template>
@@ -73,14 +127,15 @@ const Colors = ref([
 
 .Tools {
   padding: 5px;
-  width: 100px;
+  width: 120px;
   flex-wrap: wrap;
   gap: 5px;
 }
 
 .ToolbarIcon {
   position: relative;
-  width: 40px;
+  width: 38px;
+  height: 38px;
   flex: 1;
   cursor: pointer;
 }
@@ -114,6 +169,7 @@ const Colors = ref([
   position: relative;
 }
 
+.SelectedColor,
 .Color:active,
 .ToolbarIcon:active {
   top: 3px;
