@@ -50,7 +50,6 @@ onMounted(() => {
 })
 
 const StartDrawing = () => {
-  console.log('StartedDrawing')
   isDrawing = true
   drawCircle()
 }
@@ -61,6 +60,10 @@ const changeColor = (newClr) => {
 }
 
 const drawCircle = () => {
+  if (canvasMouse.isOutside.value == true) {
+    isDrawing = false
+    return
+  }
   if (isDrawing) {
     ctx.beginPath()
     ctx.arc(canvasMouse.elementX.value, canvasMouse.elementY.value, brushSize.value, 0, 2 * Math.PI)
@@ -79,11 +82,14 @@ const EndDrawing = () => {
     <div class="Wrapper row">
       <div class="Tools row">
         <img class="Pen ToolbarIcon" src="/public/Media/Pencil.webp" />
-        <img class="Eraser ToolbarIcon" src="/public/Media/Eraser.webp" />
-        <img class="Line ToolbarIcon" src="/public/Media/Line.webp" />
-        <img class="Square ToolbarIcon" src="/public/Media/Square.webp" />
-        <img class="Triangle ToolbarIcon" src="/public/Media/Triangle.webp" />
-        <img class="Circle ToolbarIcon" src="/public/Media/Circle.webp" />
+        <img class="Eraser ToolbarIcon Locked" src="/public/Media/Eraser.webp" />
+        <img class="Line ToolbarIcon Locked" src="/public/Media/Line.webp" />
+        <img class="Square ToolbarIcon Locked" src="/public/Media/Square.webp" />
+        <img class="Triangle ToolbarIcon Locked" src="/public/Media/Triangle.webp" />
+        <img class="Circle ToolbarIcon Locked" src="/public/Media/Circle.webp" />
+        <div class="Clear" @click="ctx.clearRect(0, 0, canvasElement.width, canvasElement.height)">
+          Clear
+        </div>
       </div>
       <canvas
         class="PaintCanvas"
@@ -92,7 +98,7 @@ const EndDrawing = () => {
         @mouseup="EndDrawing"
       ></canvas>
     </div>
-    <div class="row" style="width: 100%; justify-content: flex-start">
+    <div class="row" style="width: 100%; justify-content: flex-start; gap: 100px">
       <div class="Colors">
         <div
           v-for="clr in Colors"
@@ -103,12 +109,30 @@ const EndDrawing = () => {
           @click="changeColor(clr)"
         ></div>
       </div>
-      <input type="range" min="1" max="30" step="1" v-model="brushSize" />
+      <div class="col" style="gap: 5px">
+        <input type="range" min="1" max="30" step="1" v-model="brushSize" style="width: 200px" />
+        <h5>{{ brushSize }}px</h5>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+h5 {
+  font-size: 18px;
+}
+
+.Clear {
+  margin-top: 10px;
+  font-size: var(--smallButtonFontSize);
+  background-color: var(--lightGray);
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  padding: 5px 15px;
+  cursor: pointer;
+  position: relative;
+}
+
 .Wrapper {
   width: 100%;
   height: 85%;
@@ -171,8 +195,60 @@ const EndDrawing = () => {
 
 .SelectedColor,
 .Color:active,
-.ToolbarIcon:active {
+.ToolbarIcon:active,
+.Clear:active {
   top: 3px;
   left: 2px;
+}
+
+.Locked {
+  opacity: 0.2;
+}
+
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type='range']::-moz-range-thumb {
+  border-radius: 0px;
+  height: 10px;
+  width: 20px;
+  background-color: var(--lightGray);
+  border: 1px solid black;
+  cursor: pointer;
+  rotate: 90deg;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0px;
+  height: 10px;
+  width: 20px;
+  background-color: var(--lightGray);
+  border: 1px solid black;
+  cursor: pointer;
+  rotate: 90deg;
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: var(--gray);
+  border: 0px;
+  border-bottom: 1.3px solid black;
+  border-right: 1.3px solid black;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--gray);
+  border: 0px;
+  border-bottom: 1.3px solid black;
+  border-right: 1.3px solid black;
+  cursor: pointer;
 }
 </style>

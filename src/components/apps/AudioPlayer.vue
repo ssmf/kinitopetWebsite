@@ -391,18 +391,6 @@ input[type='range']::-webkit-slider-runnable-track {
   cursor: pointer;
 }
 
-/***** Track Styles *****/
-/***** Chrome, Safari, Opera, and Edge Chromium *****/
-input[type='range']::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 4px;
-  background: var(--gray);
-  border: 0px;
-  border-bottom: 1.3px solid black;
-  border-right: 1.3px solid black;
-  cursor: pointer;
-}
-
 .TrackListWrapper {
   gap: 20px;
 }
