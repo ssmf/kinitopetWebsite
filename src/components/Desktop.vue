@@ -10,7 +10,6 @@ const Files = ref([
   { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
   { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
   { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
-  { name: 'Get Kinitopet', fileExtension: 'webm', iconScale: 1 },
   { name: 'Terminal', fileExtension: 'webm', iconScale: 0.8 },
   { name: 'Author', fileExtension: 'webp', iconScale: 0.8 },
   { name: 'About me', fileExtension: 'webp', iconScale: 1 },

@@ -124,11 +124,11 @@ h5 {
 
 .Clear {
   margin-top: 10px;
-  font-size: var(--smallButtonFontSize);
+  font-size: 20px;
   background-color: var(--lightGray);
   border-bottom: 1px solid black;
   border-right: 1px solid black;
-  padding: 5px 15px;
+  padding: 3px 15px;
   cursor: pointer;
   position: relative;
 }

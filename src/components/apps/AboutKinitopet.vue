@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+const redirect = () => {
+  window.open('https://store.steampowered.com/app/2075070/KinitoPET/', '_blank')
+}
+</script>
 
 <template>
   <div class="AboutKinitopet col">
@@ -113,6 +117,14 @@
         </p>
       </div>
     </div>
+    <div class="sectionBreak"></div>
+    <div class="GetKinitopetSection col">
+      <h2 class="GetKinitopetCopy">
+        So why wait! Get your new <span class="pink">best friend</span> companion for just
+        <span class="green">5.99$</span> <span class="red">!!!</span>
+      </h2>
+      <button class="BuyKinitopetButton" @click="redirect">GET KINITOPET</button>
+    </div>
   </div>
 </template>
 
@@ -128,6 +140,25 @@
   padding: 15px;
   gap: 20px;
   overflow-x: hidden;
+}
+
+.GetKinitopetSection {
+  gap: 20px;
+}
+
+.BuyKinitopetButton {
+  font-size: var(--windowSecondHeaderSize);
+  background-color: var(--pink);
+  padding: 10px 20px;
+  border: 3px solid black;
+  box-shadow: 3px 3px 0px 3px var(--gray);
+  rotate: 0deg;
+  transition: 1s all ease-in-out;
+}
+
+.BuyKinitopetButton:hover {
+  rotate: 360deg;
+  cursor: pointer;
 }
 
 p {
@@ -206,7 +237,8 @@ h4 {
 .KinitoTitle::after,
 .BookIcon::before,
 .MonitorIcon::before,
-.SpiralIcon::before {
+.SpiralIcon::before,
+.GetKinitopetCopy::before {
   display: inline-block;
   content: ' ';
   position: relative;
@@ -215,6 +247,13 @@ h4 {
   background-image: url('/public/Media/Heart.gif');
   min-height: 32px;
   min-width: 32px;
+}
+
+.GetKinitopetCopy::before {
+  background-image: url('/public/Media/BuyTheGame.gif');
+  min-height: 40px;
+  min-width: 40px;
+  background-size: cover;
 }
 
 .BookIcon::before {
