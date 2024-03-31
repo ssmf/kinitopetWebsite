@@ -15,7 +15,7 @@ const skipImg = (val) => {
 const imageName = ref(
   `Name: ${currentImg.value.replace('/public/Media/Images/', '').replace('.webp', '')}`
 )
-const imageTime = ref(`Time: ${20 + Math.floor(Math.random() * (30 - 20))} years ago`)
+const imageTime = ref(`Time: ${12 + Math.floor(Math.random() * (30 - 12))} years ago`)
 const imageSize = ref(`Size: ${5 + Math.floor(Math.random() * (40 - 5))}Kb`)
 const imagePath = ref(
   `Path: C:\\Media\\Pictures\\${currentImg.value.replace('/public/Media/Images/', '')}`
@@ -23,19 +23,23 @@ const imagePath = ref(
 
 const generateImageDetails = () => {
   imageName.value = `Name: ${currentImg.value.replace('/public/Media/Images/', '').replace('.webp', '')}`
-  imageTime.value = `Time: ${20 + Math.floor(Math.random() * (30 - 20))} years ago`
+  imageTime.value = `Time: ${12 + Math.floor(Math.random() * (30 - 12))} years ago`
   imageSize.value = `Size: ${5 + Math.floor(Math.random() * (40 - 5))}Kb`
   imagePath.value = `Path: C:\\Media\\Pictures\\${currentImg.value.replace('/public/Media/Images/', '')}`
 }
 
 watch(currentImg, generateImageDetails)
+
+const getSRC = (src) => {
+  return new URL(src.replace('/public', ''), import.meta.url).href
+}
 </script>
 
 <template>
   <div class="Images col">
     <div class="MainWrapper row">
       <div class="ImageListWrapper col">
-        <h2>C:\Pictures\</h2>
+        <h2>C:\Media\Pictures\</h2>
         <div class="ImageList col">
           <p
             v-for="imgPath in imagePaths"
@@ -49,7 +53,7 @@ watch(currentImg, generateImageDetails)
         </div>
       </div>
       <div class="col ImageWrapper">
-        <img class="ImageDisplay" :src="currentImg" />
+        <img class="ImageDisplay" :src="getSRC(currentImg)" />
         <div class="ButtonWrapper row">
           <button @click="skipImg(-1)"><</button>
           <button @click="skipImg(1)">></button>
@@ -68,7 +72,7 @@ watch(currentImg, generateImageDetails)
 <style scoped>
 .Images {
   align-items: stretch;
-  width: 900px;
+  width: 1000px;
 }
 
 h2 {
@@ -124,12 +128,12 @@ button:active {
 }
 
 .ImageWrapper {
-  flex: 4;
+  flex: 3;
   gap: 5px;
 }
 
 .ImageDisplay {
-  height: 100%;
+  height: 500px;
   width: 100%;
 }
 
