@@ -1,9 +1,34 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const imagePaths = Object.keys(import.meta.glob('/public/Media/Images/*'))
 
 const currentImg = ref(imagePaths[0])
+
+const skipImg = (val) => {
+  currentImg.value =
+    imagePaths[
+      Math.min(Math.max(0, imagePaths.indexOf(currentImg.value) + val), imagePaths.length - 1)
+    ]
+}
+
+const imageName = ref(
+  `Name: ${currentImg.value.replace('/public/Media/Images/', '').replace('.webp', '')}`
+)
+const imageTime = ref(`Time: ${20 + Math.floor(Math.random() * (30 - 20))} years ago`)
+const imageSize = ref(`Size: ${5 + Math.floor(Math.random() * (40 - 5))}Kb`)
+const imagePath = ref(
+  `Path: C:\\Media\\Pictures\\${currentImg.value.replace('/public/Media/Images/', '')}`
+)
+
+const generateImageDetails = () => {
+  imageName.value = `Name: ${currentImg.value.replace('/public/Media/Images/', '').replace('.webp', '')}`
+  imageTime.value = `Time: ${20 + Math.floor(Math.random() * (30 - 20))} years ago`
+  imageSize.value = `Size: ${5 + Math.floor(Math.random() * (40 - 5))}Kb`
+  imagePath.value = `Path: C:\\Media\\Pictures\\${currentImg.value.replace('/public/Media/Images/', '')}`
+}
+
+watch(currentImg, generateImageDetails)
 </script>
 
 <template>
@@ -26,16 +51,26 @@ const currentImg = ref(imagePaths[0])
       <div class="col ImageWrapper">
         <img class="ImageDisplay" :src="currentImg" />
         <div class="ButtonWrapper row">
-          <button><</button>
-          <button>></button>
+          <button @click="skipImg(-1)"><</button>
+          <button @click="skipImg(1)">></button>
         </div>
       </div>
     </div>
-    <div class="ImageDetails"></div>
+    <div class="ImageDetails col">
+      <p>{{ imageName }}</p>
+      <p>{{ imageTime }}</p>
+      <p>{{ imageSize }}</p>
+      <p>{{ imagePath }}</p>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.Images {
+  align-items: stretch;
+  width: 900px;
+}
+
 h2 {
   font-size: var(--windowSecondHeaderSize);
   text-align: center;
@@ -45,9 +80,26 @@ p {
   font-size: var(--windowTextSize);
 }
 
-.Images {
-  align-items: stretch;
-  width: 900px;
+.ButtonWrapper {
+  justify-content: space-between;
+  width: 100%;
+  padding: 2px 30px;
+}
+
+button {
+  font-size: var(--smallButtonFontSize);
+  padding: 5px 10px;
+  background-color: var(--gray);
+  border: 1px solid var(--lightGray);
+  box-shadow: 1px 1px 0px 1px black;
+  cursor: pointer;
+  position: relative;
+}
+
+button:active {
+  top: 2px;
+  left: 2px;
+  box-shadow: -1px -1px 0px 1px black;
 }
 
 .MainWrapper {
@@ -73,15 +125,12 @@ p {
 
 .ImageWrapper {
   flex: 4;
+  gap: 5px;
 }
 
 .ImageDisplay {
   height: 100%;
   width: 100%;
-}
-
-.ImageDetails {
-  height: 80px;
 }
 
 .ImageName {
