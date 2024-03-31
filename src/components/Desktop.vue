@@ -1,8 +1,30 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import File from '@/components/File.vue'
 import { useMouse, useElementSize, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
+
+const currentTheme = ref({ mainColor: '#807e7e', secondaryColor: '#c3c3c3' })
+const currentWallpaper = ref('/public/Media/Wallpapers/Wallpaper1.webp')
+
+const changeTheme = (newTheme) => {
+  currentTheme.value = newTheme
+}
+
+const changeWallpaper = (newWallpaper) => {
+  currentWallpaper.value = newWallpaper
+  console.log(currentWallpaper.value)
+}
+
+provide('currentTheme', {
+  currentTheme,
+  changeTheme
+})
+
+provide('currentWallpaper', {
+  currentWallpaper,
+  changeWallpaper
+})
 
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
@@ -124,10 +146,20 @@ const putOnTop = (window) => {
   newArr.push(window)
   openWindows.value = newArr
 }
+
+const getSRC = (src) => {
+  console.log(src)
+  return new URL(src.replace('/public', ''), import.meta.url).href
+}
 </script>
 
 <template>
-  <div class="Desktop" id="Desktop" ref="DesktopDom">
+  <div
+    class="Desktop"
+    id="Desktop"
+    ref="DesktopDom"
+    :style="{ backgroundImage: `url(${getSRC(currentWallpaper)})` }"
+  >
     <File
       :style="`top: ${mousePos.y - 50}px; left: ${mousePos.x - 50}px;`"
       v-for="specificFile in Files"
@@ -161,11 +193,10 @@ const putOnTop = (window) => {
 .Desktop {
   flex: 13;
   padding: 12px;
-  background-image: url('/Media/Wallpapers/Wallpaper1.webp');
   background-size: cover;
   background-position: center;
   image-rendering: crisp-edges;
-
+  image-rendering: pixelated;
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-template-rows: repeat(auto-fill, 100px);

@@ -1,11 +1,12 @@
 <script setup>
 import { useElementSize, useMouse } from '@vueuse/core'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref, inject } from 'vue'
 
 const props = defineProps(['Name', 'IconExtension', 'MousePos', 'IconScale', 'ComputerSpecs'])
 const closeFunc = defineModel('closeFunc')
 const putOnTop = defineModel('putOnTop')
 const SessionTime = defineModel('SessionTime')
+const { currentTheme } = inject('currentTheme')
 
 const windowDom = ref(null)
 const mousePos = ref(useMouse())
@@ -44,13 +45,19 @@ const stopDragging = () => {
   <div
     class="Window"
     ref="windowDom"
-    :style="
-      isDragging
-        ? { top: mousePos.y - 20 + 'px', left: mousePos.x - windowSize.width / 2 + 'px' }
-        : { top: mousePos, left: mousePos }
-    "
+    :style="{
+      top: isDragging ? mousePos.y - 20 + 'px' : mousePos,
+      left: isDragging ? mousePos.x - windowSize.width / 2 + 'px' : mousePos,
+      border: `10px solid ${currentTheme.secondaryColor}`,
+      backgroundColor: currentTheme.secondaryColor
+    }"
   >
-    <div class="TopBar" @mousedown="startDragging" @mouseup="stopDragging">
+    <div
+      class="TopBar"
+      @mousedown="startDragging"
+      @mouseup="stopDragging"
+      :style="{ backgroundColor: currentTheme.mainColor }"
+    >
       <div class="AppDetails">
         <img
           v-if="IconExtension == 'webp'"
@@ -97,14 +104,11 @@ const stopDragging = () => {
 .Window {
   position: fixed;
   width: fit-content;
-  border: 10px solid var(--gray);
-  background-color: var(--gray);
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 .TopBar {
-  background-color: var(--darkGray);
   height: 30px;
   padding: 3px 6px;
   display: flex;

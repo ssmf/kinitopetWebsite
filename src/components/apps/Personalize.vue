@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 
 const wallpaperPaths = Object.keys(import.meta.glob('/public/Media/Wallpapers/*'))
 
@@ -10,7 +10,8 @@ const colorList = [
   { mainColor: '#116309', secondaryColor: '#1cdf0b' }
 ]
 
-const currentColor = ref(colorList[0])
+const { currentTheme, changeTheme } = inject('currentTheme')
+const { currentWallpaper, changeWallpaper } = inject('currentWallpaper')
 
 const getSRC = (src) => {
   return new URL(src.replace('/public', ''), import.meta.url).href
@@ -30,14 +31,19 @@ const getSRC = (src) => {
             backgroundColor: clr.mainColor,
             boxShadow: `3px 3px 0px 3px ${clr.secondaryColor}`
           }"
-          @click="currentColor = clr"
+          @click="changeTheme(clr)"
         ></button>
       </div>
     </div>
     <div class="Wallpapers col">
       <h1>Wallpapers:</h1>
       <div class="WallpapersList row">
-        <img :src="getSRC(wlp)" v-for="wlp in wallpaperPaths" :key="JSON.stringify(wlp)" />
+        <img
+          :src="getSRC(wlp)"
+          v-for="wlp in wallpaperPaths"
+          :key="JSON.stringify(wlp)"
+          @click="changeWallpaper(wlp)"
+        />
       </div>
     </div>
   </div>
