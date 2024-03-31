@@ -139,6 +139,7 @@ button:active {
 
 .ImageName {
   cursor: pointer;
+  padding: 1px 3px;
 }
 
 .ImageName:hover {

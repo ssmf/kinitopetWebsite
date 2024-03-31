@@ -161,7 +161,7 @@ const putOnTop = (window) => {
 .Desktop {
   flex: 13;
   padding: 12px;
-  background-image: url('/Media/DefaultWallpaper.webp');
+  background-image: url('/Media/Wallpapers/Wallpaper1.webp');
   background-size: cover;
   background-position: center;
   image-rendering: crisp-edges;
