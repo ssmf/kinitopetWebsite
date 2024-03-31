@@ -40,7 +40,7 @@ let ctx = null
 
 const currentColor = ref(Colors.value[0])
 let isDrawing = false
-const brushSize = ref(30)
+const brushSize = ref(10)
 
 onMounted(() => {
   ctx = canvasElement.value.getContext('2d')
