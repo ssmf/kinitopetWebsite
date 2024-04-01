@@ -78,10 +78,7 @@ let isDragging = false
 let maxX = null
 let maxY = null
 
-onMounted(() => {
-  maxX = Math.floor(DesktopDom.value.offsetWidth / 120 + 1) - 1
-  maxY = Math.floor(DesktopDom.value.offsetHeight / 120)
-
+const placeFiles = () => {
   let indx = 1
   let indx2 = 1
   for (const child of DesktopDom.value.children) {
@@ -94,6 +91,14 @@ onMounted(() => {
       indx2++
     }
   }
+}
+
+provide('ResetDesktopFiles', placeFiles)
+
+onMounted(() => {
+  maxX = Math.floor(DesktopDom.value.offsetWidth / 120 + 1) - 1
+  maxY = Math.floor(DesktopDom.value.offsetHeight / 120)
+  placeFiles()
 })
 
 const Select = async (newSel) => {

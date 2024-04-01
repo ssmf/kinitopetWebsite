@@ -1,12 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 
 const inputElement = ref(null)
 
 const inputValue = ref('')
+const ResetDesktopFiles = inject('ResetDesktopFiles')
+const { changeTheme } = inject('currentTheme')
+const { changeWallpaper } = inject('currentWallpaper')
 
 const clearTerminal = () => {
   console.log('clear')
+}
+
+const resetPers = () => {
+  changeTheme({ mainColor: '#807e7e', secondaryColor: '#c3c3c3' })
+  changeWallpaper('/public/Media/Wallpapers/Wallpaper1.webp')
+}
+
+const resetDesktop = () => {
+  ResetDesktopFiles()
 }
 
 const currentOutputs = ref([
@@ -16,8 +28,8 @@ const currentOutputs = ref([
 
 const commandList = [
   { command: 'help', func: clearTerminal },
-  { command: 'resetDesktop', func: clearTerminal },
-  { command: 'resetPersonalization', func: clearTerminal },
+  { command: 'resetDesktop', func: resetDesktop },
+  { command: 'resetPersonalization', func: resetPers },
   { command: 'reboot', func: clearTerminal },
   { command: 'shutDown', func: clearTerminal },
   { command: 'aboutCreator', func: clearTerminal },
