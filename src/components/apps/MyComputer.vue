@@ -107,7 +107,7 @@ const SpecsToDisplay = ref({
   align-items: flex-start;
   gap: 3px;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 10px;
   height: 150px;
 }
 

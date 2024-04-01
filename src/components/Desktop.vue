@@ -122,7 +122,6 @@ const PlaceFile = () => {
 
   DesktopDom.value.childNodes.forEach((file) => {
     if (file.style && file.style.gridArea == `${y} / ${x} / ${y + 1} / ${x + 1}`) {
-      console.log('This area is taken!')
       isTaken = true
       return 0
     }
@@ -137,7 +136,6 @@ const clampFunc = (val, max) => {
 }
 
 const closeWindow = (window) => {
-  console.log('closed')
   openWindows.value = openWindows.value.filter((el) => el != window)
 }
 
@@ -148,7 +146,6 @@ const putOnTop = (window) => {
 }
 
 const getSRC = (src) => {
-  console.log(src)
   return new URL(src.replace('/public', ''), import.meta.url).href
 }
 </script>

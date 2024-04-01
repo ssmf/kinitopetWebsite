@@ -60,7 +60,7 @@ const stopDragging = () => {
     >
       <div class="AppDetails">
         <img
-          v-if="IconExtension == 'webp'"
+          v-if="IconExtension == 'webp' || IconExtension == 'gif'"
           :src="appIcon"
           alt="icon of the app"
           class="AppIcon"
