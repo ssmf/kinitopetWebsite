@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide } from 'vue'
+import { ref, provide, onMounted } from 'vue'
 import File from '@/components/File.vue'
 import { useMouse, useElementSize, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
@@ -75,6 +75,27 @@ const mousePos = ref(useMouse())
 let Openable = false
 let isDragging = false
 
+let maxX = null
+let maxY = null
+
+onMounted(() => {
+  maxX = Math.floor(DesktopDom.value.offsetWidth / 120 + 1) - 1
+  maxY = Math.floor(DesktopDom.value.offsetHeight / 120)
+
+  let indx = 1
+  let indx2 = 1
+  for (const child of DesktopDom.value.children) {
+    console.log(Math.floor(indx / maxY))
+    child.style.gridArea = `${indx} / ${indx2} / ${indx + 1} / ${indx2 + 1}`
+    if (indx < 7) {
+      indx++
+    } else {
+      indx = 1
+      indx2++
+    }
+  }
+})
+
 const Select = async (newSel) => {
   if (
     currentSelection == newSel &&
@@ -112,10 +133,7 @@ window.addEventListener('mouseup', () => {
 })
 
 const PlaceFile = () => {
-  const DesktopSize = useElementSize(DesktopDom)
   let isTaken = false
-  const maxX = Math.floor(DesktopSize.width.value / 120 + 1) - 1
-  const maxY = Math.floor(DesktopSize.height.value / 120)
 
   const x = clampFunc(Math.floor(mousePos.value.x / 120) + 1, maxX)
   const y = clampFunc(Math.floor(mousePos.value.y / 120) + 1, maxY)
@@ -158,7 +176,10 @@ const getSRC = (src) => {
     :style="{ backgroundImage: `url(${getSRC(currentWallpaper)})` }"
   >
     <File
-      :style="`top: ${mousePos.y - 50}px; left: ${mousePos.x - 50}px;`"
+      :style="{
+        top: `${mousePos.y - 50}px`,
+        left: `${mousePos.x - 50}px`
+      }"
       v-for="specificFile in Files"
       :key="specificFile.name"
       :Name="specificFile.name"
@@ -201,6 +222,7 @@ const getSRC = (src) => {
   gap: 20px;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
 .OpenWindowsWrapper {

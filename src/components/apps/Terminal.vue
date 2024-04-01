@@ -27,10 +27,13 @@ const commandList = [
 
 const enterValue = () => {
   const cmnd = commandList.find((e) => e.command == inputValue.value)
-  cmnd ? cmnd.func() : (inputValue.value = '')
+  cmnd ? cmnd.func() : throwError(inputValue.value)
+  inputValue.value = ''
 }
 
-const throwError = (err) => {}
+const throwError = (err) => {
+  currentOutputs.value.push(`Command '${err}' is not recognized.`)
+}
 </script>
 
 <template>
