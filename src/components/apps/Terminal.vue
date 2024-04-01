@@ -1,14 +1,17 @@
 <script setup></script>
 
 <template>
-  <div class="MyComputer">
+  <div class="Terminal">
     <p>hello!</p>
   </div>
 </template>
 
 <style scoped>
-.MyComputer {
-  width: 600px;
-  height: 200px;
+.Terminal {
+  width: 800px;
+  height: 450px;
+  background-color: black;
+  color: white;
+  padding: 5px;
 }
 </style>

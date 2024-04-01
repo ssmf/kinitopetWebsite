@@ -69,6 +69,8 @@ img {
 
 .Personalize {
   gap: 40px;
+  background-color: white;
+  padding: 15px;
 }
 
 .Themes {

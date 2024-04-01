@@ -140,6 +140,7 @@ const redirect = () => {
   padding: 15px;
   gap: 20px;
   overflow-x: hidden;
+  background-color: white;
 }
 
 .GetKinitopetSection {

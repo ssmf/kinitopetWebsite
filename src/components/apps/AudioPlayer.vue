@@ -263,10 +263,12 @@ const getSRC = (song) => {
 
 .AudioPlayer {
   display: flex;
-  height: 400px;
+  height: 430px;
   width: max-content;
   display: flex;
   gap: 20px;
+  background-color: white;
+  padding: 10px;
 }
 .Main {
   margin-bottom: -70px;

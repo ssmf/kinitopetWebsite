@@ -28,14 +28,14 @@ provide('currentWallpaper', {
 
 const Files = ref([
   { name: 'My Computer', fileExtension: 'webp', iconScale: 0.9 },
-  { name: 'Audio Player', fileExtension: 'webp', iconScale: 1.5 },
+  { name: 'Audio Player', fileExtension: 'gif', iconScale: 0.8 },
   { name: 'About Kinitopet', fileExtension: 'webm', iconScale: 1.5 },
   { name: 'Character Details', fileExtension: 'webp', iconScale: 0.8 },
   { name: 'Paint', fileExtension: 'webp', iconScale: 1.3 },
   { name: 'Terminal', fileExtension: 'webm', iconScale: 0.8 },
-  { name: 'Author', fileExtension: 'webp', iconScale: 0.8 },
+  { name: 'Kinitopet Author', fileExtension: 'webp', iconScale: 0.8 },
   { name: 'About me', fileExtension: 'webp', iconScale: 1 },
-  { name: 'Personalize', fileExtension: 'webp', iconScale: 1 },
+  { name: 'Personalize', fileExtension: 'gif', iconScale: 0.8 },
   { name: 'Settings', fileExtension: 'webp', iconScale: 0.85 },
   { name: 'Images', fileExtension: 'webp', iconScale: 0.9 }
 ])

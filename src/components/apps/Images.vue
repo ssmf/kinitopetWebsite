@@ -73,6 +73,8 @@ const getSRC = (src) => {
 .Images {
   align-items: stretch;
   width: 1000px;
+  background-color: white;
+  padding: 5px;
 }
 
 h2 {

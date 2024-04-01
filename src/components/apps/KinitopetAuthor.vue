@@ -129,6 +129,8 @@ h3 {
 .Author {
   gap: 10px;
   width: 600px;
+  background-color: white;
+  padding: 10px;
 }
 
 .LinksWrapper {

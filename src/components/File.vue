@@ -20,7 +20,7 @@ onMounted(() => {
 <template>
   <div class="File" @mousedown="Select(FileDom)" ref="FileDom">
     <img
-      v-if="IconPath[IconPath.length - 1] == 'p'"
+      v-if="IconPath[IconPath.length - 1] == 'p' || IconPath[IconPath.length - 1] == 'f'"
       draggable="false"
       :src="imagePath"
       class="FileImage"

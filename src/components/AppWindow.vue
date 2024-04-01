@@ -80,6 +80,7 @@ const stopDragging = () => {
       <div class="Options">
         <button
           class="exit"
+          :style="{ backgroundColor: currentTheme.secondaryColor }"
           @mousedown="
             () => {
               closeFunc(Name)
@@ -130,7 +131,6 @@ const stopDragging = () => {
 .Content {
   padding: 10px;
   border: 2px solid (--darkGray);
-  background-color: white;
 }
 
 .Options {
@@ -147,7 +147,7 @@ const stopDragging = () => {
   aspect-ratio: 1 / 1;
   padding: 5px;
   text-align: center;
-  background-color: var(--gray);
+  border: none;
   box-shadow: 1px 1px 0px 1px black;
 }
 </style>

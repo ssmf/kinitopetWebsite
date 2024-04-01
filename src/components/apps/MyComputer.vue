@@ -83,6 +83,8 @@ const SpecsToDisplay = ref({
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background-color: white;
+  padding: 10px;
 }
 
 .MainInfo {

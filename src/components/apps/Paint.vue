@@ -168,6 +168,8 @@ h5 {
   width: 900px;
   height: 600px;
   gap: 10px;
+  background-color: white;
+  padding: 10px;
 }
 
 .Colors {
