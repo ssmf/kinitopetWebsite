@@ -13,7 +13,6 @@ const changeTheme = (newTheme) => {
 
 const changeWallpaper = (newWallpaper) => {
   currentWallpaper.value = newWallpaper
-  console.log(currentWallpaper.value)
 }
 
 provide('currentTheme', {
@@ -77,12 +76,12 @@ let maxX = null
 let maxY = null
 
 const placeFiles = () => {
+  maxY = Math.floor(DesktopDom.value.offsetHeight / 120)
   let indx = 1
   let indx2 = 1
   for (const child of DesktopDom.value.children) {
-    console.log(Math.floor(indx / maxY))
     child.style.gridArea = `${indx} / ${indx2} / ${indx + 1} / ${indx2 + 1}`
-    if (indx < 7) {
+    if (Math.floor(indx / maxY) == 0) {
       indx++
     } else {
       indx = 1
