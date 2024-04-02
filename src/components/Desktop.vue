@@ -1,7 +1,7 @@
 <script setup>
 import { ref, provide, onMounted } from 'vue'
 import File from '@/components/File.vue'
-import { useMouse, useElementSize, until } from '@vueuse/core'
+import { useMouse, until } from '@vueuse/core'
 import AppWindow from './AppWindow.vue'
 
 const currentTheme = ref({ mainColor: '#807e7e', secondaryColor: '#c3c3c3' })
