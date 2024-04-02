@@ -7,18 +7,19 @@ const inputValue = ref('')
 const ResetDesktopFiles = inject('ResetDesktopFiles')
 const { changeTheme } = inject('currentTheme')
 const { changeWallpaper } = inject('currentWallpaper')
+const CloseWindowFunc = inject('closeWindow')
 
-const clearTerminal = () => {
-  console.log('clear')
+const printMessage = (outputMsg) => {
+  currentOutputs.value.push('---------------------------------------------------')
+  currentOutputs.value.push(outputMsg)
 }
 
-const resetPers = () => {
-  changeTheme({ mainColor: '#807e7e', secondaryColor: '#c3c3c3' })
-  changeWallpaper('/public/Media/Wallpapers/Wallpaper1.webp')
-}
-
-const resetDesktop = () => {
-  ResetDesktopFiles()
+const printHelp = () => {
+  currentOutputs.value.push('---------------------------------------------------')
+  currentOutputs.value.push("Here's a list of all the commands available: ")
+  commandList.forEach((e) => {
+    currentOutputs.value.push(`"${e.command}" - ${e.desc}`)
+  })
 }
 
 const currentOutputs = ref([
@@ -27,14 +28,61 @@ const currentOutputs = ref([
 ])
 
 const commandList = [
-  { command: 'help', func: clearTerminal },
-  { command: 'resetDesktop', func: resetDesktop },
-  { command: 'resetPersonalization', func: resetPers },
-  { command: 'reboot', func: clearTerminal },
-  { command: 'shutDown', func: clearTerminal },
-  { command: 'aboutCreator', func: clearTerminal },
-  { command: 'close', func: clearTerminal },
-  { command: 'clear', func: clearTerminal }
+  {
+    command: 'help',
+    func: printHelp,
+    desc: 'Prints out all of the commands available'
+  },
+  {
+    command: 'resetDesktop',
+    func: () => {
+      printMessage('Desktop has been reset!')
+      ResetDesktopFiles()
+    },
+    desc: 'Puts all of the desktop icons onto their original positions'
+  },
+  {
+    command: 'resetPersonalization',
+    func: () => {
+      printMessage('Personalization has been reset!')
+      changeTheme({ mainColor: '#807e7e', secondaryColor: '#c3c3c3' })
+      changeWallpaper('/public/Media/Wallpapers/Wallpaper1.webp')
+    },
+    desc: 'Sets your theme and desktop to the default ones'
+  },
+  {
+    command: 'reboot',
+    func: () => location.reload(),
+    desc: 'reboots your currently active session'
+  },
+  {
+    command: 'shutDown',
+    func: () => {
+      window.close()
+    },
+    desc: 'deactivates your current active session'
+  },
+  {
+    command: 'close',
+    func: () => {
+      CloseWindowFunc('Terminal')
+    },
+    desc: 'Closes the terminal window'
+  },
+  {
+    command: 'closeAll',
+    func: () => {
+      CloseWindowFunc('all')
+    },
+    desc: 'Closes all currently active windows'
+  },
+  {
+    command: 'clear',
+    func: () => {
+      currentOutputs.value = []
+    },
+    desc: 'Clears all of the terminal outputs'
+  }
 ]
 
 const enterValue = () => {

@@ -68,6 +68,7 @@ setInterval(() => {
 }, 1000)
 
 let openWindows = ref([])
+
 let currentSelection = null
 const DesktopDom = ref(null)
 const mousePos = ref(useMouse())
@@ -159,8 +160,14 @@ const clampFunc = (val, max) => {
 }
 
 const closeWindow = (window) => {
-  openWindows.value = openWindows.value.filter((el) => el != window)
+  if (window == 'all') {
+    openWindows.value = []
+  } else {
+    openWindows.value = openWindows.value.filter((el) => el != window)
+  }
 }
+
+provide('closeWindow', closeWindow)
 
 const putOnTop = (window) => {
   const newArr = openWindows.value.filter((el) => el != window)
