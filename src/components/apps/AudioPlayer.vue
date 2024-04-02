@@ -1,7 +1,9 @@
 <script setup>
 import { useDateFormat } from '@vueuse/core'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed, inject } from 'vue'
 import AudioVisualizer from '@/components/AudioVisualizer.vue'
+
+const { currentTheme } = inject('currentTheme')
 
 const isPlaying = ref(false)
 const stopped = ref(true)
@@ -235,6 +237,7 @@ const getSRC = (song) => {
           :key="song"
           class="Track"
           ref="TracksDom"
+          :class="[song == currentSong.id ? 'SelectedTrack' : '']"
         >
           <p :id="song + 'Title'" class="TrackName">
             {{ song.replace('/public/Music/', '') }}
@@ -246,6 +249,10 @@ const getSRC = (song) => {
 </template>
 
 <style scoped>
+.SelectedTrack {
+  background-color: v-bind('currentTheme.secondaryColor');
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -435,6 +442,7 @@ input[type='range']::-webkit-slider-runnable-track {
 }
 
 .Track {
+  color: v-bind('currentTheme.mainColor');
   border-bottom: 1px solid black;
   padding: 8px;
   font-size: var(--windowSecondHeaderSize);
@@ -464,7 +472,7 @@ input[type='range']::-webkit-slider-runnable-track {
 .TrackListHeading {
   font-size: var(--windowSecondHeaderSize);
   text-align: center;
-  background-color: var(--pink);
+  background-color: v-bind('currentTheme.secondaryColor');
   border-radius: 5px;
   width: 100%;
 }

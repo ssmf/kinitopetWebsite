@@ -1,5 +1,7 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref, inject } from 'vue'
+
+const { currentTheme } = inject('currentTheme')
 
 const analyzer = defineModel('analyzer')
 
@@ -34,9 +36,9 @@ const animateBars = () => {
   for (let i = 0; i < bufferLength; i++) {
     barHeight = dataArr[i]
     if (i % 2 == 0) {
-      ctx.fillStyle = 'black'
+      ctx.fillStyle = currentTheme.value.mainColor
     } else {
-      ctx.fillStyle = '#f3b2f8'
+      ctx.fillStyle = currentTheme.value.secondaryColor
     }
     ctx.fillRect(x, visualizerCanvas.value.height - barHeight * 0.6, barWidth, barHeight)
     x += barWidth

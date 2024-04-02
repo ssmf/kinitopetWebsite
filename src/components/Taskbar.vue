@@ -2,11 +2,15 @@
 import { useDateFormat, useNow } from '@vueuse/core'
 
 const currentTime = useDateFormat(useNow(), 'hh:mm A')
+
+const closeOS = () => {
+  window.close()
+}
 </script>
 
 <template>
   <div class="Taskbar">
-    <div class="powerButton">
+    <div class="powerButton" @click="closeOS">
       <img draggable="false" src="/Media/powerButton.webp" alt="Power off Button" />
     </div>
     <div class="ActiveAppsWrapper"></div>

@@ -82,11 +82,6 @@ const EndDrawing = () => {
     <div class="Wrapper row">
       <div class="Tools row">
         <img class="Pen ToolbarIcon" src="/public/Media/Pencil.webp" />
-        <img class="Eraser ToolbarIcon Locked" src="/public/Media/Eraser.webp" />
-        <img class="Line ToolbarIcon Locked" src="/public/Media/Line.webp" />
-        <img class="Square ToolbarIcon Locked" src="/public/Media/Square.webp" />
-        <img class="Triangle ToolbarIcon Locked" src="/public/Media/Triangle.webp" />
-        <img class="Circle ToolbarIcon Locked" src="/public/Media/Circle.webp" />
         <div class="Clear" @click="ctx.clearRect(0, 0, canvasElement.width, canvasElement.height)">
           Clear
         </div>
@@ -109,7 +104,8 @@ const EndDrawing = () => {
           @click="changeColor(clr)"
         ></div>
       </div>
-      <div class="col" style="gap: 5px">
+      <div class="col" style="gap: 3px">
+        <h3>Brush size:</h3>
         <input type="range" min="1" max="30" step="1" v-model="brushSize" style="width: 200px" />
         <h5>{{ brushSize }}px</h5>
       </div>
@@ -118,6 +114,9 @@ const EndDrawing = () => {
 </template>
 
 <style scoped>
+h3 {
+  font-size: var(--windowTextSize);
+}
 h5 {
   font-size: 18px;
 }
@@ -158,7 +157,7 @@ h5 {
 
 .ToolbarIcon {
   position: relative;
-  width: 38px;
+  max-width: 38px;
   height: 38px;
   flex: 1;
   cursor: pointer;
