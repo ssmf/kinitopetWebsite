@@ -288,6 +288,8 @@ const getSRC = (song) => {
   font-size: var(--windowThirdHeaderSize);
   border: 2px solid black;
   box-shadow: 2px 2px 0px 2px var(--gray);
+  color: black;
+  background-color: v-bind('currentTheme.secondaryColor');
 }
 
 .SongTitle::before {

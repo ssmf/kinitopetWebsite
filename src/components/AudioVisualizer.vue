@@ -58,7 +58,7 @@ const animateBars = () => {
 .AudioVisualizer {
   width: 100%;
   height: 200px;
-  background-color: var(--darkGray);
+  background-color: var(--lightGray);
   border: 7px solid var(--gray);
 }
 

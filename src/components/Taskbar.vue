@@ -23,8 +23,6 @@ const closeOS = () => {
 <style scoped>
 .Taskbar {
   box-sizing: border-box;
-  border: 5px solid white;
-  border-bottom: none;
   flex: 1;
   background-color: var(--gray);
   display: flex;
@@ -54,7 +52,7 @@ img {
   height: fit-content;
   padding: 5px 10px;
   font-size: var(--dateSize);
-  border: 4px solid black;
+  border: 2px solid black;
   box-shadow: 2px 2px 0px 2px var(--darkGray);
 }
 </style>
