@@ -93,15 +93,25 @@ const stopDragging = () => {
       </div>
     </div>
     <div class="Content">
-      <WindowContent
-        v-model:SessionTime="SessionTime"
-        :ComputerSpecs="ComputerSpecs"
-      ></WindowContent>
+      <Suspense>
+        <WindowContent
+          v-model:SessionTime="SessionTime"
+          :ComputerSpecs="ComputerSpecs"
+        ></WindowContent>
+        <template #fallback>
+          <img class="Loading" src="/public/Media/Loading.gif" />
+        </template>
+      </Suspense>
     </div>
   </div>
 </template>
 
 <style scoped>
+.Loading {
+  height: auto;
+  width: 100%;
+}
+
 .Window {
   position: fixed;
   width: fit-content;
