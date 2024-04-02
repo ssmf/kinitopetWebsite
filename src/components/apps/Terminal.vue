@@ -5,7 +5,7 @@ const inputElement = ref(null)
 
 const inputValue = ref('')
 const ResetDesktopFiles = inject('ResetDesktopFiles')
-const { changeTheme } = inject('currentTheme')
+const { changeTheme, currentTheme } = inject('currentTheme')
 const { changeWallpaper } = inject('currentWallpaper')
 const CloseWindowFunc = inject('closeWindow')
 
@@ -97,7 +97,11 @@ const throwError = (err) => {
 </script>
 
 <template>
-  <div class="Terminal col" @click="inputElement.focus()">
+  <div
+    class="Terminal col"
+    @click="inputElement.focus()"
+    :style="{ color: currentTheme.secondaryColor }"
+  >
     <div class="Output">
       <p
         v-for="currentOutput in currentOutputs"
@@ -115,6 +119,7 @@ const throwError = (err) => {
           ref="inputElement"
           v-model="inputValue"
           @keydown.enter="enterValue"
+          :style="{ color: currentTheme.secondaryColor }"
         />
       </div>
     </div>
@@ -143,6 +148,7 @@ p {
 
 .Output {
   flex: 9;
+  overflow: auto;
 }
 
 .Wrapper {
@@ -162,7 +168,7 @@ p {
 
 ::selection {
   color: black;
-  background: white;
+  background: v-bind('currentTheme.secondaryColor');
 }
 
 .InputElement {
@@ -171,7 +177,6 @@ p {
   padding: 0px;
   border: 0px;
   background-color: rgba(0, 0, 0, 0);
-  color: white;
   min-height: 30px;
   margin-top: 2px;
 }
