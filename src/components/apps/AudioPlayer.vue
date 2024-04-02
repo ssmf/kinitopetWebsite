@@ -41,7 +41,7 @@ watch(LR, (curr) => {
 
 const songsPaths = Object.keys(import.meta.glob('/public/Music/*'))
 
-let currentSong = ref('')
+let currentSong = ref({ id: '/public/Music/A world I build for you.mp3' })
 const songs = ref(null)
 
 onMounted(() => {
@@ -129,7 +129,7 @@ const getSRC = (song) => {
     </div>
     <div class="Main col" style="flex-wrap: nowrap">
       <AudioVisualizer v-model:analyzer="analyzer"></AudioVisualizer>
-      <div class="TimeLine"></div>
+      <div class="SongTitle">{{ currentSong.id.replace('/public/Music/', '') }}</div>
       <div class="Wrapper row">
         <div class="Interactions col">
           <Suspense>
@@ -274,8 +274,21 @@ const getSRC = (song) => {
   margin-bottom: -70px;
 }
 
+.SongTitle {
+  margin-top: 5px;
+  align-self: flex-start;
+  padding: 10px;
+  font-size: var(--windowThirdHeaderSize);
+  border: 2px solid black;
+  box-shadow: 2px 2px 0px 2px var(--gray);
+}
+
+.SongTitle::before {
+}
+
 .Wrapper {
   gap: 10px;
+  margin-top: -60px;
 }
 
 .Buttons {
