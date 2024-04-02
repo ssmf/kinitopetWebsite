@@ -173,7 +173,7 @@ const putOnTop = (window) => {
 }
 
 const getSRC = (src) => {
-  return new URL(src.replace('/public', ''), import.meta.url).href
+  return new URL(src.replace('/public', '/kinitopetWebsite'), import.meta.url).href
 }
 </script>
 

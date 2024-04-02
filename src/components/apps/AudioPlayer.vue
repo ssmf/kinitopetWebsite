@@ -113,7 +113,7 @@ const songEnded = () => {
 }
 
 const getSRC = (song) => {
-  return new URL(song.replace('/public', ''), import.meta.url).href
+  return new URL(song.replace('/public', '/kinitopetWebsite'), import.meta.url).href
 }
 </script>
 

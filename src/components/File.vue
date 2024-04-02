@@ -4,7 +4,10 @@ import { onMounted, ref } from 'vue'
 
 const props = defineProps(['IconPath', 'Name', 'iconScale'])
 
-const imagePath = new URL('/Media/' + props.IconPath.split(' ').join(''), import.meta.url).href
+const imagePath = new URL(
+  '/kinitopetWebsite/Media/' + props.IconPath.split(' ').join(''),
+  import.meta.url
+).href
 const Select = defineModel('selectFunction')
 const UnSelect = defineModel('UnSelect')
 

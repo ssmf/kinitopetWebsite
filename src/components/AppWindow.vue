@@ -16,7 +16,7 @@ const WindowContent = defineAsyncComponent(
   () => import(`./apps/${props.Name.split(' ').join('')}.vue`)
 )
 const appIcon = new URL(
-  '/Media/' + props.Name.split(' ').join('') + '.' + props.IconExtension,
+  '/kinitopetWebsite/Media/' + props.Name.split(' ').join('') + '.' + props.IconExtension,
   import.meta.url
 ).href
 
